@@ -50,3 +50,8 @@ terraform {
 provider "tfe" {
   token = var.tfc_org_token
 }
+
+resource "tls_private_key" "jump" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
