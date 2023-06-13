@@ -1,11 +1,11 @@
 resource "tfe_agent_pool" "azure" {
-  name         = "${local.tfc_org}-agent-pool-azure"
+  name         = "${local.tfc_org}-agent-pool-azure-${random_id.this.hex}"
   organization = local.tfc_org
 }
 
 resource "tfe_agent_token" "azure" {
   agent_pool_id = tfe_agent_pool.azure.id
-  description   = "${local.tfc_org}-agent-token-azure"
+  description   = "${local.tfc_org}-agent-token-azure-${random_id.this.hex}"
 }
 
 resource "tls_private_key" "tfc_agent" {

@@ -1,11 +1,11 @@
 resource "tfe_agent_pool" "aws" {
-  name         = "${local.tfc_org}-agent-pool-aws"
+  name         = "${local.tfc_org}-agent-pool-aws-${random_id.this.hex}"
   organization = local.tfc_org
 }
 
 resource "tfe_agent_token" "aws" {
   agent_pool_id = tfe_agent_pool.aws.id
-  description   = "${local.tfc_org}-agent-token-aws"
+  description   = "${local.tfc_org}-agent-token-aws-${random_id.this.hex}"
 }
 
 resource "aws_iam_role" "tfc_agent" {
