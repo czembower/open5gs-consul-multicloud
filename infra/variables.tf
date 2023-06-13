@@ -1,3 +1,7 @@
+variable "tfc_org_token" {
+  type = string
+}
+
 variable "azure_location" {
   type    = string
   default = "eastus2"

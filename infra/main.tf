@@ -46,3 +46,7 @@ terraform {
     }
   }
 }
+
+provider "tfe" {
+  token = var.tfc_org_token
+}
