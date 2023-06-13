@@ -17,9 +17,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "this" {
   ami = data.aws_ami.ubuntu.id
   instance_market_options {
-    instance_market_options = {
-      market_type = "spot"
-    }
+    market_type = "spot"
     spot_options {
       spot_instance_type = "persistent"
     }
