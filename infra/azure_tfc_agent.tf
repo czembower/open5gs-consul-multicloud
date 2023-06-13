@@ -13,6 +13,30 @@ resource "tls_private_key" "tfc_agent" {
   rsa_bits  = 4096
 }
 
+data "azurerm_role_definition" "owner" {
+  name = "Owner"
+}
+
+resource "azurerm_user_assigned_identity" "tfc_agent" {
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  name                = "tfc-agent-${random_id.this.hex}"
+}
+
+resource "azurerm_role_assignment" "tfc_agent" {
+  scope              = data.azurerm_subscription.this.id
+  role_definition_id = data.azurerm_role_definition.owner.id
+  principal_id       = azurerm_user_assigned_identity.tfc_agent.principal_id
+
+  skip_service_principal_aad_check = true
+
+  lifecycle {
+    ignore_changes = [
+      role_definition_id
+    ]
+  }
+}
+
 data "template_file" "tfc_agent_user_data" {
   template = file("${path.module}/resources/tfc_agent_userdata.sh")
 
