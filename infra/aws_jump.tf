@@ -22,5 +22,5 @@ resource "aws_instance" "this" {
     }
   }
   instance_type = "t4g.nano"
-  subnet_id     = module.vpc.public_subnets[0].id
+  subnet_id     = module.vpc.public_subnets[0]
 }
