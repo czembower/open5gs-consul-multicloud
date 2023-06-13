@@ -1,6 +1,6 @@
 resource "azurerm_virtual_network" "this" {
   name                = "vnet-${random_id.this.hex}"
-  location            = var.location
+  location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
   address_space       = [var.vnet_cidr]
 

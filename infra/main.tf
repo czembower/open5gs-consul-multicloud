@@ -20,12 +20,7 @@ provider "aws" {
   region = var.aws_region
 
   default_tags {
-    tags = {
-      TERRAFORM     = true
-      TFC_ORG       = local.tfc_org
-      TFC_WORKSPACE = local.tfc_workspace
-      GIT_BRANCH    = var.TFC_CONFIGURATION_VERSION_GIT_BRANCH
-    }
+    tags = local.tags
   }
 }
 

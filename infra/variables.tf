@@ -32,4 +32,11 @@ locals {
   private_subnets = [cidrsubnet(var.vpc_cidr, 2, 0), cidrsubnet(var.vpc_cidr, 2, 1), cidrsubnet(var.vpc_cidr, 2, 2)]    // 3x /26
   public_subnets  = [cidrsubnet(var.vpc_cidr, 4, 12), cidrsubnet(var.vpc_cidr, 4, 13), cidrsubnet(var.vpc_cidr, 4, 14)] // 3x /28
   azs             = chunklist(data.aws_availability_zones.this.names, 3)[0]                                             // returns first three availability zones in the region as a list
+
+  tags = {
+    TERRAFORM     = true
+    TFC_ORG       = local.tfc_org
+    TFC_WORKSPACE = local.tfc_workspace
+    GIT_BRANCH    = var.TFC_CONFIGURATION_VERSION_GIT_BRANCH
+  }
 }

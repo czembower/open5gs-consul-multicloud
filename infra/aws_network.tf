@@ -1,3 +1,12 @@
+data "aws_availability_zones" "this" {
+  state = "available"
+
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
+
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   name   = "vpc-${random_id.this.hex}"
@@ -13,6 +22,26 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   enable_dhcp_options  = false
+}
+
+resource "aws_security_group" "vpc_endpoints" {
+  name        = "endpoints-${random_id.this.hex}"
+  description = "endpoints-${random_id.this.hex}"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [module.vpc.vpc_cidr_block]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 module "vpc_endpoints" {
