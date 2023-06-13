@@ -22,6 +22,6 @@ resource "aws_instance" "this" {
       spot_instance_type = "persistent"
     }
   }
-  instance_type = "t4g.nano"
+  instance_type = "t3.nano"
   subnet_id     = module.vpc.public_subnets[0]
 }
