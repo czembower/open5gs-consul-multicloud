@@ -19,7 +19,8 @@ resource "aws_instance" "this" {
   instance_market_options {
     market_type = "spot"
     spot_options {
-      spot_instance_type = "persistent"
+      spot_instance_type             = "persistent"
+      instance_interruption_behavior = "stop"
     }
   }
   instance_type = "t3.nano"
