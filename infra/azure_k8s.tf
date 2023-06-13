@@ -48,7 +48,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     vm_size                = "Standard_D2as_v4"
     type                   = "VirtualMachineScaleSets"
     vnet_subnet_id         = azurerm_subnet.this.id
-    enable_host_encryption = true
+    enable_host_encryption = false
     zones                  = null
 
     node_labels = {
