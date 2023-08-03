@@ -34,6 +34,11 @@ resource "aws_security_group" "aws_jump" {
   }
 }
 
+resource "aws_key_pair" "jump" {
+  key_name   = "jump"
+  public_key = tls_private_key.jump.public_key_openssh
+}
+
 resource "aws_instance" "this" {
   ami = data.aws_ami.ubuntu.id
   instance_market_options {
@@ -46,4 +51,5 @@ resource "aws_instance" "this" {
   instance_type   = "t3.nano"
   subnet_id       = module.vpc.public_subnets[0]
   security_groups = [aws_security_group.aws_jump.id]
+  key_name        = aws_key_pair.jump.key_name
 }
