@@ -53,3 +53,79 @@ resource "aws_instance" "this" {
   security_groups = [aws_security_group.aws_jump.id]
   key_name        = aws_key_pair.jump.key_name
 }
+
+resource "aws_iam_role" "jump" {
+  name = "jump-${random_id.this.hex}-iamrole"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+    },
+    "Effect": "Allow",
+    "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_instance_profile" "jump" {
+  name = "jump-${random_id.this.hex}-instance-profile"
+  role = aws_iam_role.jump.id
+}
+
+
+resource "aws_iam_role_policy" "jump" {
+  name   = "jump-${random_id.this.hex}-iampolicy"
+  role   = aws_iam_role.jump.id
+  policy = <<EOF
+{
+  "Version": "2012-10-17",	
+  "Statement": [	
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetInstanceProfile",
+        "iam:GetUser",
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel",
+        "ssm:UpdateInstanceInformation",
+        "ssm:UpdateInstanceAssociationStatus",
+        "ssm:ListInstanceAssociations",
+        "ec2messages:GetMessages"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeCluster"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
