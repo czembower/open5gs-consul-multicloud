@@ -57,13 +57,12 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   network_profile {
-    network_plugin     = "kubenet"
-    service_cidr       = local.service_cidr
-    docker_bridge_cidr = local.docker_bridge_cidr
-    dns_service_ip     = local.dns_service_ip
-    pod_cidr           = local.pod_cidr
-    load_balancer_sku  = "standard"
-    outbound_type      = "userAssignedNATGateway"
+    network_plugin    = "kubenet"
+    service_cidr      = local.service_cidr
+    dns_service_ip    = local.dns_service_ip
+    pod_cidr          = local.pod_cidr
+    load_balancer_sku = "standard"
+    outbound_type     = "userAssignedNATGateway"
   }
 
   identity {

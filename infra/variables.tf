@@ -36,15 +36,14 @@ variable "aks_cidr" {
 }
 
 locals {
-  tfc_org            = split("/", var.TFC_WORKSPACE_SLUG)[0]
-  tfc_workspace      = split("/", var.TFC_WORKSPACE_SLUG)[1]
-  private_subnets    = [cidrsubnet(var.vpc_cidr, 2, 0), cidrsubnet(var.vpc_cidr, 2, 1), cidrsubnet(var.vpc_cidr, 2, 2)]    // 3x /26
-  public_subnets     = [cidrsubnet(var.vpc_cidr, 4, 12), cidrsubnet(var.vpc_cidr, 4, 13), cidrsubnet(var.vpc_cidr, 4, 14)] // 3x /28
-  azs                = chunklist(data.aws_availability_zones.this.names, 3)[0]                                             // returns first three availability zones in the region as a list
-  service_cidr       = cidrsubnet(var.aks_cidr, 2, 0)
-  docker_bridge_cidr = "${cidrhost(cidrsubnet(var.aks_cidr, 2, 1), 1)}/${split("/", cidrsubnet(var.aks_cidr, 2, 1))[1]}"
-  pod_cidr           = cidrsubnet(var.aks_cidr, 2, 2)
-  dns_service_ip     = cidrhost(local.service_cidr, 10)
+  tfc_org         = split("/", var.TFC_WORKSPACE_SLUG)[0]
+  tfc_workspace   = split("/", var.TFC_WORKSPACE_SLUG)[1]
+  private_subnets = [cidrsubnet(var.vpc_cidr, 2, 0), cidrsubnet(var.vpc_cidr, 2, 1), cidrsubnet(var.vpc_cidr, 2, 2)]    // 3x /26
+  public_subnets  = [cidrsubnet(var.vpc_cidr, 4, 12), cidrsubnet(var.vpc_cidr, 4, 13), cidrsubnet(var.vpc_cidr, 4, 14)] // 3x /28
+  azs             = chunklist(data.aws_availability_zones.this.names, 3)[0]                                             // returns first three availability zones in the region as a list
+  service_cidr    = cidrsubnet(var.aks_cidr, 2, 0)
+  pod_cidr        = cidrsubnet(var.aks_cidr, 2, 2)
+  dns_service_ip  = cidrhost(local.service_cidr, 10)
 
   tags = {
     TERRAFORM     = true
