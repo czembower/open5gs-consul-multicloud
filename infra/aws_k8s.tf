@@ -1,6 +1,6 @@
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
-  cluster_name = "eks-cluster"
+  cluster_name = "eks-cluster-${random_id.this.hex}"
 
   cluster_endpoint_public_access = false
 

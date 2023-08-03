@@ -35,7 +35,7 @@ resource "aws_security_group" "aws_jump" {
 }
 
 resource "aws_key_pair" "jump" {
-  key_name   = "jump"
+  key_name   = "jump-${random_id.this.hex}"
   public_key = tls_private_key.jump.public_key_openssh
 }
 
