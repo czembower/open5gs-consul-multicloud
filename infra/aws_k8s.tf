@@ -18,9 +18,10 @@ module "eks" {
     }
   }
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.private_subnets
-  control_plane_subnet_ids = module.vpc.private_subnets
+  vpc_id                                = module.vpc.vpc_id
+  subnet_ids                            = module.vpc.private_subnets
+  control_plane_subnet_ids              = module.vpc.private_subnets
+  cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
 
   fargate_profiles = {
     default = {
@@ -31,5 +32,18 @@ module "eks" {
         }
       ]
     }
+  }
+}
+
+resource "aws_security_group" "eks_additional" {
+  name        = "eks-addtl-${random_id.this.hex}"
+  description = "eks-addtl-${random_id.this.hex}"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.aws_jump.id]
   }
 }
