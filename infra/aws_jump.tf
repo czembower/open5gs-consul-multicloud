@@ -30,7 +30,7 @@ resource "aws_security_group" "aws_jump" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.var.jump_allowed_cidr]
+    cidr_blocks = [var.jump_allowed_cidr]
   }
 }
 
