@@ -34,7 +34,7 @@ terraform {
   backend "remote" {
     organization = "team-rsa"
     workspaces {
-      name = "01_infra"
+      name = "02_k8s_app_deploy"
     }
   }
   required_providers {
@@ -45,13 +45,4 @@ terraform {
       source = "hashicorp/aws"
     }
   }
-}
-
-provider "tfe" {
-  token = var.tfc_org_token
-}
-
-resource "tls_private_key" "jump" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
 }

@@ -137,7 +137,7 @@ resource "aws_iam_role_policy" "jump" {
     {
       "Effect": "Allow",
       "Action": [
-        "eks:DescribeCluster"
+        "eks:*"
       ],
       "Resource": "*"
     }
