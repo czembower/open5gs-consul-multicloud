@@ -15,8 +15,8 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_security_group" "aws_jump" {
-  name        = "tfc-agent-${random_id.this.hex}"
-  description = "tfc-agent-${random_id.this.hex}"
+  name        = "jump-${random_id.this.hex}"
+  description = "jump-${random_id.this.hex}"
   vpc_id      = module.vpc.vpc_id
 
   egress {
