@@ -63,11 +63,12 @@ resource "aws_instance" "this" {
       instance_interruption_behavior = "stop"
     }
   }
-  instance_type   = "t3.nano"
-  subnet_id       = module.vpc.public_subnets[0]
-  security_groups = [aws_security_group.aws_jump.id]
-  key_name        = aws_key_pair.jump.key_name
-  user_data       = data.template_cloudinit_config.jump.rendered
+  instance_type        = "t3.nano"
+  subnet_id            = module.vpc.public_subnets[0]
+  security_groups      = [aws_security_group.aws_jump.id]
+  key_name             = aws_key_pair.jump.key_name
+  user_data            = data.template_cloudinit_config.jump.rendered
+  iam_instance_profile = aws_iam_instance_profile.jump.id
 }
 
 resource "aws_iam_role" "jump" {
