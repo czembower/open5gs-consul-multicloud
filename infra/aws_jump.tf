@@ -39,6 +39,21 @@ resource "aws_key_pair" "jump" {
   public_key = tls_private_key.jump.public_key_openssh
 }
 
+data "template_cloudinit_config" "jump" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    filename     = "cloud_init.txt"
+    content_type = "text/x-shellscript"
+
+    content = templatefile("${path.module}/resources/aws_jump_userdata.sh", {
+      region           = var.aws_region
+      eks_cluster_name = module.eks.cluster_name
+    })
+  }
+}
+
 resource "aws_instance" "this" {
   ami = data.aws_ami.ubuntu.id
   instance_market_options {
@@ -52,6 +67,7 @@ resource "aws_instance" "this" {
   subnet_id       = module.vpc.public_subnets[0]
   security_groups = [aws_security_group.aws_jump.id]
   key_name        = aws_key_pair.jump.key_name
+  user_data       = data.template_cloudinit_config.jump.rendered
 }
 
 resource "aws_iam_role" "jump" {
