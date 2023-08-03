@@ -16,12 +16,13 @@ module "vpc" {
   private_subnets = local.private_subnets
   public_subnets  = local.public_subnets
 
-  enable_nat_gateway   = true
-  single_nat_gateway   = false
-  enable_vpn_gateway   = false
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-  enable_dhcp_options  = false
+  enable_nat_gateway      = true
+  single_nat_gateway      = false
+  enable_vpn_gateway      = false
+  enable_dns_hostnames    = true
+  enable_dns_support      = true
+  enable_dhcp_options     = false
+  map_public_ip_on_launch = true
 }
 
 resource "aws_security_group" "vpc_endpoints" {
