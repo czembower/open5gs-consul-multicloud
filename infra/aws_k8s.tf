@@ -64,10 +64,3 @@ resource "aws_security_group" "eks_additional" {
     security_groups = [aws_security_group.tfc_agent.id]
   }
 }
-
-- groups:
-  - system:bootstrappers
-  - system:nodes
-  - system:node-proxier
-  rolearn: arn:aws:iam::863546674084:role/default-20230803171718527400000001
-  username: system:node:{{SessionName}}
