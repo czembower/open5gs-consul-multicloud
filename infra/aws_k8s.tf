@@ -46,4 +46,11 @@ resource "aws_security_group" "eks_additional" {
     protocol        = "tcp"
     security_groups = [aws_security_group.aws_jump.id]
   }
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.tfc_agent.id]
+  }
 }
