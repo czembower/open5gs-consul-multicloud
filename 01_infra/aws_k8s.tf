@@ -23,16 +23,6 @@ module "eks" {
   control_plane_subnet_ids              = module.vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
 
-  manage_aws_auth_configmap = true
-
-  aws_auth_roles = [
-    {
-      rolearn  = aws_iam_role.jump.arn
-      username = "jump"
-      groups   = ["system:masters"]
-    }
-  ]
-
   fargate_profiles = {
     default = {
       name = "default"

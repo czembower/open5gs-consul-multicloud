@@ -1,21 +1,3 @@
-# REQUIRED ENVIRONMENT VARIABLES
-# ARM_TENANT_ID
-# ARM_SUBSCRIPTION_ID
-# ARM_CLIENT_ID
-# ARM_CLIENT_SECRET
-provider "azurerm" {
-
-  features {
-    key_vault {
-      purge_soft_delete_on_destroy = true
-    }
-
-    virtual_machine_scale_set {
-      roll_instances_when_required = false
-    }
-  }
-}
-
 provider "aws" {
   region = var.aws_region
 

@@ -96,7 +96,6 @@ resource "aws_iam_instance_profile" "jump" {
   role = aws_iam_role.jump.id
 }
 
-
 resource "aws_iam_role_policy" "jump" {
   name   = "jump-${random_id.this.hex}-iampolicy"
   role   = aws_iam_role.jump.id
@@ -145,4 +144,3 @@ resource "aws_iam_role_policy" "jump" {
 }
 EOF
 }
-
