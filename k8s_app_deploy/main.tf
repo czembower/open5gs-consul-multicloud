@@ -30,6 +30,14 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.this.token
 }
 
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.this.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority.0.data)
+    token                  = data.aws_eks_cluster_auth.this.token
+  }
+}
+
 # RANDOM ID TO USE FOR UNIQUE RESOURCE NAMING
 resource "random_id" "this" {
   byte_length = 4
@@ -52,6 +60,9 @@ terraform {
     }
     kubernetes = {
       source = "hashicorp/kubernetes"
+    }
+    helm = {
+      source = "hashicorp/helm"
     }
   }
 }
