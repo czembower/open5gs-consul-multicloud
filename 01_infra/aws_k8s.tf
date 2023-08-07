@@ -27,9 +27,6 @@ module "eks" {
     blue = {
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
-      labels = {
-        "eks.amazonaws.com/compute-type" = "ec2"
-      }
     }
     green = {
       min_size     = 2
@@ -38,9 +35,6 @@ module "eks" {
 
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
-      labels = {
-        "eks.amazonaws.com/compute-type" = "ec2"
-      }
     }
   }
 
