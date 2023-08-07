@@ -1,3 +1,5 @@
+data "aws_partition" "current" {}
+
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = "eks-cluster-${random_id.this.hex}"
@@ -25,21 +27,22 @@ module "eks" {
   subnet_ids                            = module.vpc.private_subnets
   control_plane_subnet_ids              = module.vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
+  iam_role_additional_policies = {
+    AmazonEBSCSIDriverPolicy = "arn:${data.aws_partition.current.partition}:iam::aws:policy/AmazonEBSCSIDriverPolicy"
+  }
 
   eks_managed_node_groups = {
     blue = {
-      instance_types               = ["t3.large"]
-      capacity_type                = "SPOT"
-      iam_role_additional_policies = ["AmazonEBSCSIDriverPolicy"]
+      instance_types = ["t3.large"]
+      capacity_type  = "SPOT"
     }
     green = {
       min_size     = 2
       max_size     = 10
       desired_size = 3
 
-      instance_types               = ["t3.large"]
-      capacity_type                = "SPOT"
-      iam_role_additional_policies = ["AmazonEBSCSIDriverPolicy"]
+      instance_types = ["t3.large"]
+      capacity_type  = "SPOT"
     }
   }
 
