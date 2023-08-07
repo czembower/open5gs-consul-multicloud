@@ -18,18 +18,6 @@ module "eks" {
     }
   }
 
-  manage_aws_auth_configmap = true
-
-  aws_auth_roles = [
-    {
-      rolearn  = aws_iam_role.jump.arn
-      username = "jump:{{SessionName}}"
-      groups = [
-        "system:masters"
-      ]
-    }
-  ]
-
   vpc_id                                = module.vpc.vpc_id
   subnet_ids                            = module.vpc.private_subnets
   control_plane_subnet_ids              = module.vpc.private_subnets
