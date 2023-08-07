@@ -13,8 +13,4 @@ resource "helm_release" "free5gc_nrf" {
   namespace  = kubernetes_namespace.free5gc_nrf.metadata[0].name
   repository = "https://raw.githubusercontent.com/Orange-OpenSource/towards5gs-helm/main/repo/"
   chart      = "free5gc-nrf"
-
-  # values = [
-  #   data.template_file.consul_values.rendered
-  # ]
 }

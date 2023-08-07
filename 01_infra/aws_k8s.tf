@@ -44,16 +44,16 @@ module "eks" {
     }
   }
 
-  fargate_profiles = {
-    default = {
-      name = "default"
-      selectors = [
-        {
-          namespace = "*"
-        }
-      ]
-    }
-  }
+  # fargate_profiles = {
+  #   default = {
+  #     name = "default"
+  #     selectors = [
+  #       {
+  #         namespace = "*"
+  #       }
+  #     ]
+  #   }
+  # }
 }
 
 resource "aws_security_group" "eks_additional" {
