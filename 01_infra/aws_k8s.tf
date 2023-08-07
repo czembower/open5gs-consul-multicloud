@@ -26,6 +26,18 @@ module "eks" {
   control_plane_subnet_ids              = module.vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
 
+  eks_managed_node_groups = {
+    blue = {}
+    green = {
+      min_size     = 2
+      max_size     = 10
+      desired_size = 3
+
+      instance_types = ["t3.large"]
+      capacity_type  = "SPOT"
+    }
+  }
+
   fargate_profiles = {
     default = {
       name = "default"
