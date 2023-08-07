@@ -6,7 +6,7 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
     namespace = "kube-system"
   }
 
-  data = yamlencode(
+  data = yamlencode([
     {
       rolearn  = "${data.terraform_remote_state.infra.outputs.jump_iam_role}"
       username = "jump:{{SessionName}}"
@@ -23,5 +23,6 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
         "system:node-proxier"
       ]
     }
+    ]
   )
 }
