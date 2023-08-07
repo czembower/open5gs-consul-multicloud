@@ -24,7 +24,13 @@ module "eks" {
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
 
   eks_managed_node_groups = {
-    blue = {}
+    blue = {
+      instance_types = ["t3.large"]
+      capacity_type  = "SPOT"
+      labels = {
+        "eks.amazonaws.com/compute-type" = "ec2"
+      }
+    }
     green = {
       min_size     = 2
       max_size     = 10
@@ -32,6 +38,9 @@ module "eks" {
 
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
+      labels = {
+        "eks.amazonaws.com/compute-type" = "ec2"
+      }
     }
   }
 
