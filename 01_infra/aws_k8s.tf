@@ -28,16 +28,18 @@ module "eks" {
 
   eks_managed_node_groups = {
     blue = {
-      instance_types = ["t3.large"]
-      capacity_type  = "SPOT"
+      instance_types               = ["t3.large"]
+      capacity_type                = "SPOT"
+      iam_role_additional_policies = ["AmazonEBSCSIDriverPolicy"]
     }
     green = {
       min_size     = 2
       max_size     = 10
       desired_size = 3
 
-      instance_types = ["t3.large"]
-      capacity_type  = "SPOT"
+      instance_types               = ["t3.large"]
+      capacity_type                = "SPOT"
+      iam_role_additional_policies = ["AmazonEBSCSIDriverPolicy"]
     }
   }
 
