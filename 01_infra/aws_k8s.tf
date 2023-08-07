@@ -28,7 +28,7 @@ module "eks" {
   control_plane_subnet_ids              = module.vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
   iam_role_additional_policies = {
-    AmazonEBSCSIDriverPolicy = "arn:${data.aws_partition.current.partition}:iam::aws:policy/AmazonEBSCSIDriverPolicy"
+    AmazonEBSCSIDriverPolicy = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   }
 
   eks_managed_node_groups = {
