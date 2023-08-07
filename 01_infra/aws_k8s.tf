@@ -11,9 +11,6 @@ module "eks" {
     vpc-cni = {
       most_recent = true
     }
-    aws-efs-csi-driver = {
-      most_recent = true
-    }
     coredns = {
       configuration_values = jsonencode({
         computeType = "Fargate"
