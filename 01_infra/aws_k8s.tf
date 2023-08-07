@@ -1,3 +1,4 @@
+data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
 
 module "eks" {
@@ -8,9 +9,6 @@ module "eks" {
 
   cluster_addons = {
     kube-proxy = {
-      most_recent = true
-    }
-    aws-ebs-csi-driver = {
       most_recent = true
     }
     vpc-cni = {
@@ -56,6 +54,38 @@ module "eks" {
   #     ]
   #   }
   # }
+}
+
+resource "aws_iam_role" "AmazonEKS_EBS_CSI_Driver" {
+  name = "AmazonEKSEBSCSIDriverRole-${random_id.this.hex}"
+
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${module.eks.oidc_provider}"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "${module.eks.oidc_provider}:sub": "system:serviceaccount:kube-system:ebs-csi-controller-sa"
+        }
+      }
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_eks_addon" "csi" {
+  cluster_name      = module.eks.cluster_name
+  addon_name        = "aws-ebs-csi-driver"
+  resolve_conflicts = "OVERWRITE"
+
+  service_account_role_arn = aws_iam_role.AmazonEKS_EBS_CSI_Driver.arn
 }
 
 resource "aws_security_group" "eks_additional" {
