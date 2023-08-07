@@ -25,15 +25,22 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
         #     "system:node-proxier"
         #   ]
         # },
-        [for group in data.terraform_remote_state.infra.outputs.eks_managed_node_groups : {
-          rolearn  = group.iam_role_arn
+        {
+          rolearn  = data.terraform_remote_state.infra.outputs.eks_managed_node_groups.blue.iam_role_arn
           username = "system:node:{{EC2PrivateDNSName}}"
           groups = [
             "system:bootstrappers",
             "system:nodes"
           ]
-          }
-        ]
+        },
+        {
+          rolearn  = data.terraform_remote_state.infra.outputs.eks_managed_node_groups.green.iam_role_arn
+          username = "system:node:{{EC2PrivateDNSName}}"
+          groups = [
+            "system:bootstrappers",
+            "system:nodes"
+          ]
+        }
       ]
     ))
   }
