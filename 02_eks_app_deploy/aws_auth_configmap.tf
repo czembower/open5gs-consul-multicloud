@@ -15,8 +15,13 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
       ]
     },
     {
-
+      rolearn  = "${data.terraform_remote_state.infra.outputs.fargate_profiles.default.fargate_profile_pod_execution_role_arn}"
+      username = "system:node:{{SessionName}}"
+      groups = [
+        "system:bootstrappers",
+        "system:nodes",
+        "system:node-proxier"
+      ]
     }
   )
 }
-
