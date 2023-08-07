@@ -7,7 +7,7 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
   }
 
   data = {
-    mapRoles = yamlencode(
+    mapRoles = yamlencode(concat(
       [
         {
           rolearn  = "${data.terraform_remote_state.infra.outputs.jump_iam_role}"
@@ -35,6 +35,6 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
           }
         ]
       ]
-    )
+    ))
   }
 }
