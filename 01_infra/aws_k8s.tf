@@ -18,6 +18,8 @@ module "eks" {
     }
   }
 
+  manage_aws_auth_configmap = true
+
   aws_auth_roles = [
     {
       rolearn  = aws_iam_role.jump.arn
