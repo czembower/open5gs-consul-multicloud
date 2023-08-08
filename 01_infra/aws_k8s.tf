@@ -85,6 +85,11 @@ resource "aws_iam_role" "AmazonEKS_EBS_CSI_Driver" {
 POLICY
 }
 
+resource "aws_iam_role_policy_attachment" "AmazonEKS_EBS_CSI_Driver" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.AmazonEKS_EBS_CSI_Driver.name
+}
+
 resource "aws_security_group" "eks_additional" {
   name        = "eks-addtl-${random_id.this.hex}"
   description = "eks-addtl-${random_id.this.hex}"
