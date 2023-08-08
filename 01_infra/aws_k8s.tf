@@ -11,6 +11,10 @@ module "eks" {
     kube-proxy = {
       most_recent = true
     }
+    aws-ebs-csi-driver = {
+      most_recent              = true
+      service_account_role_arn = aws_iam_role.AmazonEKS_EBS_CSI_Driver.arn
+    }
     vpc-cni = {
       most_recent = true
     }
@@ -25,9 +29,9 @@ module "eks" {
   subnet_ids                            = module.vpc.private_subnets
   control_plane_subnet_ids              = module.vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
-  iam_role_additional_policies = {
-    AmazonEBSCSIDriverPolicy = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-  }
+  # iam_role_additional_policies = {
+  #   AmazonEBSCSIDriverPolicy = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  # }
 
   eks_managed_node_groups = {
     blue = {
@@ -71,6 +75,7 @@ resource "aws_iam_role" "AmazonEKS_EBS_CSI_Driver" {
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringEquals": {
+          "${module.eks.oidc_provider}:aud": "sts.amazonaws.com",
           "${module.eks.oidc_provider}:sub": "system:serviceaccount:kube-system:ebs-csi-controller-sa"
         }
       }
@@ -78,14 +83,6 @@ resource "aws_iam_role" "AmazonEKS_EBS_CSI_Driver" {
   ]
 }
 POLICY
-}
-
-resource "aws_eks_addon" "csi" {
-  cluster_name      = module.eks.cluster_name
-  addon_name        = "aws-ebs-csi-driver"
-  resolve_conflicts = "OVERWRITE"
-
-  service_account_role_arn = aws_iam_role.AmazonEKS_EBS_CSI_Driver.arn
 }
 
 resource "aws_security_group" "eks_additional" {
