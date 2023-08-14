@@ -19,8 +19,6 @@ provider "azurerm" {
 
 provider "azuread" {}
 
-data "azurerm_subscription" "this" {}
-
 provider "aws" {
   region = var.aws_region
 
