@@ -30,7 +30,7 @@ resource "hcp_aws_network_peering" "aws" {
 resource "hcp_hvn_route" "aws" {
   hvn_link         = hcp_hvn.aws.self_link
   hvn_route_id     = "hvn-route-${random_id.this.hex}"
-  destination_cidr = module.vpc.vpc_cidr
+  destination_cidr = module.vpc.vpc_cidr_block
   target_link      = hcp_aws_network_peering.aws.self_link
 }
 
