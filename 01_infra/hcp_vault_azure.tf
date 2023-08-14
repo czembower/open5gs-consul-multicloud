@@ -42,3 +42,29 @@ resource "hcp_hvn_route" "azure_vault" {
   destination_cidr = azurerm_virtual_network.this.address_space[0]
   target_link      = data.hcp_azure_peering_connection.azure_vault.self_link
 }
+
+resource "azuread_service_principal" "azure_vault" {
+  application_id = hcp_azure_peering_connection.azure_vault.application_id
+}
+
+resource "azurerm_role_definition" "azure_vault" {
+  name  = "hcp-hvn-peering-access-${random_id.this.hex}"
+  scope = azurerm_virtual_network.this.id
+
+  assignable_scopes = [
+    azurerm_virtual_network.this.id
+  ]
+
+  permissions {
+    actions = [
+      "Microsoft.Network/virtualNetworks/peer/action",
+      "Microsoft.Network/virtualNetworks/virtualNetworkPeerings/write"
+    ]
+  }
+}
+
+resource "azurerm_role_assignment" "assignment" {
+  principal_id       = azuread_service_principal.azure_vault.id
+  scope              = azurerm_virtual_network.this.id
+  role_definition_id = azurerm_role_definition.azure_vault.role_definition_resource_id
+}
