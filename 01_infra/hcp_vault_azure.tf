@@ -24,8 +24,8 @@ resource "hcp_azure_peering_connection" "azure_vault" {
   hvn_link                 = hcp_hvn.azure_vault.self_link
   peering_id               = "hvn-azure-peering-${random_id.this.hex}"
   peer_vnet_name           = azurerm_virtual_network.this.name
-  peer_subscription_id     = var.ARM_SUBSCRIPTION_ID
-  peer_tenant_id           = var.ARM_TENANT_ID
+  peer_subscription_id     = data.azurerm_subscription.this.subscription_id
+  peer_tenant_id           = data.azurerm_subscription.this.tenant_id
   peer_resource_group_name = azurerm_resource_group.this.name
   peer_vnet_region         = azurerm_virtual_network.this.location
 }

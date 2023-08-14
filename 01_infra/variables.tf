@@ -1,13 +1,3 @@
-variable "ARM_TENANT_ID" {
-  type    = string
-  default = null
-}
-
-variable "ARM_SUBSCRIPTION_ID" {
-  type    = string
-  default = null
-}
-
 variable "tfc_org_token" {
   type = string
 }
