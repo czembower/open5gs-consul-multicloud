@@ -56,11 +56,12 @@ resource "hcp_azure_peering_connection" "azure_vault" {
   peer_vnet_region         = azurerm_virtual_network.this.location
 }
 
-data "hcp_azure_peering_connection" "azure_vault" {
-  hvn_link              = hcp_hvn.azure_vault.self_link
-  peering_id            = hcp_azure_peering_connection.azure_vault.peering_id
-  wait_for_active_state = true
-}
+# NOT SURE WHY THIS IS RECOMMENDED AS IT CAUSES TF TO HANG IN SOME CASES
+# data "hcp_azure_peering_connection" "azure_vault" {
+#   hvn_link              = hcp_hvn.azure_vault.self_link
+#   peering_id            = hcp_azure_peering_connection.azure_vault.peering_id
+#   wait_for_active_state = true
+# }
 
 resource "hcp_hvn_route" "azure_vault" {
   hvn_link         = hcp_hvn.azure_vault.self_link
