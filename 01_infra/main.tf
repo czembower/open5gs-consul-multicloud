@@ -24,6 +24,11 @@ provider "aws" {
   }
 }
 
+provider "hcp" {
+  client_id     = var.hcp_client_id
+  client_secret = var.hcp_client_secret
+}
+
 # RANDOM ID TO USE FOR UNIQUE RESOURCE NAMING
 resource "random_id" "this" {
   byte_length = 4
@@ -43,6 +48,9 @@ terraform {
     }
     aws = {
       source = "hashicorp/aws"
+    }
+    hcp = {
+      source = "hashicorp/hcp"
     }
   }
 }

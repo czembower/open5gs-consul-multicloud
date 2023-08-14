@@ -40,6 +40,16 @@ variable "jump_allowed_cidr" {
   default = null
 }
 
+variable "hcp_client_id" {
+  type    = string
+  default = null
+}
+
+variable "hcp_client_secret" {
+  type    = string
+  default = null
+}
+
 locals {
   tfc_org         = split("/", var.TFC_WORKSPACE_SLUG)[0]
   tfc_workspace   = split("/", var.TFC_WORKSPACE_SLUG)[1]
