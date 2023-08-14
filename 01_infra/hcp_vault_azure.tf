@@ -67,5 +67,5 @@ resource "hcp_hvn_route" "azure_vault" {
   hvn_link         = hcp_hvn.azure_vault.self_link
   hvn_route_id     = "hvn-route-azure-${random_id.this.hex}"
   destination_cidr = azurerm_virtual_network.this.address_space[0]
-  target_link      = hcp_azure_peering_connection.azure_vault.self_link
+  target_link      = hcp_azure_peering_connection.azure_vault.self_link # this was "data.hcp_azure..."
 }
