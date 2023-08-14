@@ -54,8 +54,6 @@ resource "hcp_azure_peering_connection" "azure_vault" {
   peer_tenant_id           = data.azurerm_subscription.this.tenant_id
   peer_resource_group_name = azurerm_resource_group.this.name
   peer_vnet_region         = azurerm_virtual_network.this.location
-
-  depends_on = [azurerm_role_assignment.azure_vault]
 }
 
 data "hcp_azure_peering_connection" "azure_vault" {
