@@ -7,7 +7,6 @@ resource "kubernetes_namespace" "free5gc_nrf" {
   }
 }
 
-
 resource "helm_release" "free5gc_nrf" {
   name       = "nrf"
   namespace  = kubernetes_namespace.free5gc_nrf.metadata[0].name

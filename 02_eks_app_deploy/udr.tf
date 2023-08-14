@@ -7,7 +7,6 @@ resource "kubernetes_namespace" "free5gc_udr" {
   }
 }
 
-
 resource "helm_release" "free5gc_udr" {
   name       = "udr"
   namespace  = kubernetes_namespace.free5gc_udr.metadata[0].name
