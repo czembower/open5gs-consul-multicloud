@@ -60,6 +60,11 @@ variable "aws_hvn_cidr" {
   defualt = "172.25.16.0/20"
 }
 
+variable "azure_hvn_cidr" {
+  type    = string
+  defualt = "172.26.16.0/20"
+}
+
 locals {
   tfc_org         = split("/", var.TFC_WORKSPACE_SLUG)[0]
   tfc_workspace   = split("/", var.TFC_WORKSPACE_SLUG)[1]
