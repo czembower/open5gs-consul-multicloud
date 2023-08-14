@@ -57,12 +57,12 @@ variable "hcp_project_id" {
 
 variable "aws_hvn_cidr" {
   type    = string
-  defualt = "172.25.16.0/20"
+  default = "172.25.16.0/20"
 }
 
 variable "azure_hvn_cidr" {
   type    = string
-  defualt = "172.26.16.0/20"
+  default = "172.26.16.0/20"
 }
 
 locals {
