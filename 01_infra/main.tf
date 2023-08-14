@@ -3,6 +3,7 @@
 # ARM_SUBSCRIPTION_ID
 # ARM_CLIENT_ID
 # ARM_CLIENT_SECRET
+
 provider "azurerm" {
 
   features {
