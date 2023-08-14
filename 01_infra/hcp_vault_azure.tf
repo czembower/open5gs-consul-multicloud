@@ -11,7 +11,7 @@ resource "hcp_vault_cluster" "azure_vault" {
   tier       = "plus_small"
 
   public_endpoint = false
-  primary_link    = hcp_vault_cluster.aws.self_link
+  primary_link    = hcp_vault_cluster.aws_vault.self_link
 
   major_version_upgrade_config {
     upgrade_type            = "SCHEDULED"
