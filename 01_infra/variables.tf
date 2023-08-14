@@ -50,6 +50,11 @@ variable "hcp_client_secret" {
   default = null
 }
 
+variable "hcp_project_id" {
+  type    = string
+  default = null
+}
+
 locals {
   tfc_org         = split("/", var.TFC_WORKSPACE_SLUG)[0]
   tfc_workspace   = split("/", var.TFC_WORKSPACE_SLUG)[1]
