@@ -2,7 +2,7 @@ resource "hcp_hvn" "aws" {
   hvn_id         = "hvn-${random_id.this.hex}"
   cloud_provider = "aws"
   region         = var.aws_region
-  cidr_block     = "172.25.16.0/20"
+  cidr_block     = var.aws_hvn_cidr
 }
 
 resource "hcp_vault_cluster" "aws" {
