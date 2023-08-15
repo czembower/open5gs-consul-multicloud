@@ -70,3 +70,14 @@ resource "hcp_hvn_route" "azure_vault" {
   destination_cidr = azurerm_virtual_network.this.address_space[0]
   target_link      = data.hcp_azure_peering_connection.azure_vault.self_link
 }
+
+resource "hcp_consul_cluster" "azure_consul" {
+  cluster_id      = "consul-cluster-azure-${random_id.this.hex}"
+  hvn_id          = hcp_hvn.azure_vault.hvn_id
+  tier            = "development"
+  connect_enabled = true
+  datacenter      = "azure-${random_id.this.hex}"
+  public_endpoint = false
+  size            = "x_small"
+  primary_link    = hcp_consul_cluster.aws_consul.self_link
+}
