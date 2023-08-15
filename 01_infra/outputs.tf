@@ -15,3 +15,7 @@ output "jump_iam_role" {
 output "eks_managed_node_groups" {
   value = module.eks.eks_managed_node_groups
 }
+
+output "hcp_vault_aws" {
+  value = hcp_vault_cluster.aws_vault
+}
