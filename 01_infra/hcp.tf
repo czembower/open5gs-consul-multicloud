@@ -14,11 +14,11 @@ resource "hcp_vault_cluster" "aws_vault" {
 
   public_endpoint = true
 
-  major_version_upgrade_config {
-    upgrade_type            = "SCHEDULED"
-    maintenance_window_day  = "SATURDAY"
-    maintenance_window_time = "WINDOW_12AM_4AM"
-  }
+  # major_version_upgrade_config {
+  #   upgrade_type            = "SCHEDULED"
+  #   maintenance_window_day  = "SATURDAY"
+  #   maintenance_window_time = "WINDOW_12AM_4AM"
+  # }
 }
 
 # resource "hcp_aws_network_peering" "aws_vault" {
