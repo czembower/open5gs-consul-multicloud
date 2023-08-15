@@ -69,6 +69,10 @@ resource "aws_instance" "this" {
   user_data              = data.template_cloudinit_config.jump.rendered
   iam_instance_profile   = aws_iam_instance_profile.jump.id
   vpc_security_group_ids = [aws_security_group.aws_jump.id]
+
+  lifecycle {
+    ignore_changes = [ami]
+  }
 }
 
 resource "aws_iam_role" "jump" {
