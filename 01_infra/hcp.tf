@@ -68,7 +68,7 @@ resource "hcp_consul_cluster" "azure_consul" {
   datacenter      = "azure-${random_id.this.hex}"
   public_endpoint = true
   size            = "x_small"
-  primary_link    = hcp_consul_cluster.aws_consul.self_link
+  # primary_link    = hcp_consul_cluster.aws_consul.self_link
 }
 
 # resource "hcp_vault_cluster" "azure_vault" {
