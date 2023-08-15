@@ -21,6 +21,10 @@ resource "hcp_vault_cluster" "aws_vault" {
   # }
 }
 
+resource "hcp_vault_cluster_admin_token" "aws_vault" {
+  cluster_id = hcp_vault_cluster.aws_vault.id
+}
+
 # resource "hcp_aws_network_peering" "aws_vault" {
 #   hvn_id          = hcp_hvn.aws_vault.hvn_id
 #   peering_id      = "hvn-aws-peering-${random_id.this.hex}"
@@ -69,6 +73,10 @@ resource "hcp_consul_cluster" "azure_consul" {
   public_endpoint = true
   size            = "x_small"
   # primary_link    = hcp_consul_cluster.aws_consul.self_link
+}
+
+resource "hcp_consul_cluster_root_token" "azure_consul" {
+  cluster_id = hcp_consul_cluster.azure_consul.cluster_id
 }
 
 # resource "hcp_vault_cluster" "azure_vault" {
