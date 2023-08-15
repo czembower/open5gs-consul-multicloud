@@ -42,4 +42,9 @@ resource "helm_release" "consul" {
     name  = "client.join"
     value = data.terraform_remote_state.infra.outputs.consul_public_endpoint_url
   }
+
+  set {
+    name  = "dns.enabled"
+    value = true
+  }
 }

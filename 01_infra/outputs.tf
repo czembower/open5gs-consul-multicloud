@@ -21,7 +21,8 @@ output "hcp_vault_aws" {
 }
 
 output "hcp_vault_consul" {
-  value = hcp_consul_cluster.azure_consul
+  value     = hcp_consul_cluster.azure_consul
+  sensitive = true
 }
 
 output "hcp_consul_root_token" {
