@@ -20,6 +20,10 @@ output "hcp_vault_aws" {
   value = hcp_vault_cluster.aws_vault
 }
 
+output "hcp_vault_consul" {
+  value = hcp_consul_cluster.azure_consul
+}
+
 output "hcp_consul_root_token" {
   value     = hcp_consul_cluster_root_token.azure_consul.secret_id
   sensitive = true
