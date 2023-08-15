@@ -30,6 +30,6 @@ resource "helm_release" "vault" {
 
   set {
     name  = "global.externalVaultAddr"
-    value = data.terraform_remote_state.infra.outputs.hcp_vault_aws.vault_private_endpoint_url
+    value = data.terraform_remote_state.infra.outputs.hcp_vault_aws.vault_public_endpoint_url
   }
 }
