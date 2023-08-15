@@ -22,7 +22,7 @@ resource "hcp_vault_cluster" "aws_vault" {
 }
 
 resource "hcp_vault_cluster_admin_token" "aws_vault" {
-  cluster_id = hcp_vault_cluster.aws_vault.id
+  cluster_id = hcp_vault_cluster.aws_vault.cluster_id
 }
 
 # resource "hcp_aws_network_peering" "aws_vault" {
