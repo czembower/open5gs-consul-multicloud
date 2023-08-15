@@ -8,7 +8,7 @@ resource "hcp_hvn" "aws" {
 }
 
 resource "hcp_vault_cluster" "aws_vault" {
-  cluster_id = "vault-cluster-aws-${random_id.this.hex}"
+  cluster_id = "vault-cluster-${random_id.this.hex}"
   hvn_id     = hcp_hvn.aws.hvn_id
   tier       = "dev"
 
@@ -61,7 +61,7 @@ resource "hcp_hvn" "azure" {
 }
 
 resource "hcp_consul_cluster" "azure_consul" {
-  cluster_id      = "consul-cluster-azure-${random_id.this.hex}"
+  cluster_id      = "consul-cluster-${random_id.this.hex}"
   hvn_id          = hcp_hvn.azure.hvn_id
   tier            = "development"
   connect_enabled = true
