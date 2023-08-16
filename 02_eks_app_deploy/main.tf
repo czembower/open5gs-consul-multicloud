@@ -20,6 +20,11 @@ provider "helm" {
   }
 }
 
+provider "vault" {
+  address = data.terraform_remote_state.infra.outputs.hcp_vault_aws.vault_public_endpoint_url
+  token   = data.terraform_remote_state.infra.outputs.hcp_vault_admin_token
+}
+
 # RANDOM ID TO USE FOR UNIQUE RESOURCE NAMING
 resource "random_id" "this" {
   byte_length = 4

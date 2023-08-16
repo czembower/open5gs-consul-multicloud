@@ -1,35 +1,40 @@
-resource "kubernetes_namespace" "vault" {
-  metadata {
-    annotations = {
-      name = "vault"
-    }
-    name = "vault"
-  }
+resource "vault_mount" "pki" {
+  path = "pki"
+  type = "pki"
+
+  default_lease_ttl_seconds = 31536000
+  max_lease_ttl_seconds     = 31536000
 }
 
-resource "helm_release" "vault" {
-  name       = "vault"
-  namespace  = kubernetes_namespace.vault.metadata[0].name
-  repository = "https://helm.releases.hashicorp.com"
-  chart      = "vault"
+resource "tls_private_key" "ca_key" {
+  algorithm = "ec"
+  rsa_bits  = 256
+}
 
-  set {
-    name  = "server.enabled"
-    value = false
+resource "tls_self_signed_cert" "ca_cert" {
+  private_key_pem = tls_private_key.ca_key.private_key_pem
+
+  subject {
+    common_name  = "Vault Root CA"
+    organization = "HashiCorp"
   }
 
-  set {
-    name  = "injector.enabled"
-    value = true
-  }
+  validity_period_hours = 175200
+  allowed_uses = [
+    "cert_signing",
+    "crl_signing"
+  ]
+  is_ca_certificate = true
+}
 
-  set {
-    name  = "injector.replicas"
-    value = 2
-  }
+resource "vault_pki_secret_backend_config_ca" "ca_config" {
+  depends_on = [vault_mount.pki, tls_private_key.ca_key, tls_self_signed_cert.ca_cert]
+  backend    = vault_mount.pki.path
+  pem_bundle = "${tls_private_key.ca_key.private_key_pem}\n${tls_self_signed_cert.ca_cert.cert_pem}"
+}
 
-  set {
-    name  = "global.externalVaultAddr"
-    value = data.terraform_remote_state.infra.outputs.hcp_vault_aws.vault_public_endpoint_url
-  }
+resource "vault_pki_secret_backend_config_urls" "pki_config_urls" {
+  backend                 = vault_mount.pki.path
+  issuing_certificates    = ["http://127.0.0.1/v1/pki/ca"]
+  crl_distribution_points = ["http://127.0.0.1/v1/pki/crl"]
 }

@@ -20,7 +20,7 @@ output "hcp_vault_aws" {
   value = hcp_vault_cluster.aws_vault
 }
 
-output "hcp_vault_consul" {
+output "hcp_consul_azure" {
   value     = hcp_consul_cluster.azure_consul
   sensitive = true
 }
