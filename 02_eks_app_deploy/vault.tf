@@ -7,8 +7,8 @@ resource "vault_mount" "pki" {
 }
 
 resource "tls_private_key" "ca_key" {
-  algorithm = "ECDSA"
-  rsa_bits  = 256
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P384"
 }
 
 resource "tls_self_signed_cert" "ca_cert" {
@@ -62,7 +62,7 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   format             = "pem"
   private_key_format = "der"
   key_type           = "ec"
-  key_bits           = "512"
+  key_bits           = "384"
   organization       = "HashiCorp"
   country            = "US"
   locality           = "San Francisco"
