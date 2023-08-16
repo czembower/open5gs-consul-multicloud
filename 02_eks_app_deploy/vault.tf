@@ -7,7 +7,7 @@ resource "vault_mount" "pki" {
 }
 
 resource "tls_private_key" "ca_key" {
-  algorithm = "ec"
+  algorithm = "ECDSA"
   rsa_bits  = 256
 }
 
