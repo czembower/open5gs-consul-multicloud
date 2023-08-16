@@ -29,8 +29,8 @@ resource "helm_release" "consul" {
   }
 
   set {
-    name  = "externalServers.hosts.0"
-    value = data.terraform_remote_state.infra.outputs.hcp_vault_consul.consul_public_endpoint_url
+    name  = "externalServers.hosts"
+    value = "{${data.terraform_remote_state.infra.outputs.hcp_vault_consul.consul_public_endpoint_url}}"
   }
 
   set {
