@@ -40,7 +40,7 @@ resource "helm_release" "consul" {
 
   set {
     name  = "client.join"
-    value = split("//", data.terraform_remote_state.infra.outputs.hcp_vault_consul.consul_public_endpoint_url)[1]
+    value = "{${split("//", data.terraform_remote_state.infra.outputs.hcp_vault_consul.consul_public_endpoint_url)[1]}}"
   }
 
   set {
