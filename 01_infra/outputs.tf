@@ -1,6 +1,7 @@
 output "eks_cluster_data" {
   value = {
-    name = module.eks.cluster_name
+    name    = module.eks.cluster_name
+    ca_data = module.eks.cluster_certificate_authority_data
   }
 }
 
