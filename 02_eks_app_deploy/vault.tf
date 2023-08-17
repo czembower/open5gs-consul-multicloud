@@ -121,13 +121,13 @@ data "tls_certificate" "eks_ca" {
 resource "vault_jwt_auth_backend" "this" {
   description            = "JWT Auth Backend for Kubernetes"
   path                   = "jwt"
-  jwt_validation_pubkeys = []
+  jwt_validation_pubkeys = [data.data.tls_certificate.eks_ca.certificates.cert_pem]
 }
 
 resource "vault_jwt_auth_backend_role" "default" {
   backend         = vault_jwt_auth_backend.this.path
   role_name       = "default"
-  bound_audiences = ["https://kubernetes.default.svc.cluster.local", "vault://vault-issuer-jwt"]
+  bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
   user_claim      = "sub"
   role_type       = "jwt"
   token_ttl       = 3600
@@ -138,7 +138,7 @@ resource "vault_jwt_auth_backend_role" "default" {
 resource "vault_jwt_auth_backend_role" "consul" {
   backend         = vault_jwt_auth_backend.this.path
   role_name       = "consul-role"
-  bound_audiences = ["https://kubernetes.default.svc.cluster.local", "vault://vault-issuer-jwt"]
+  bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
   user_claim      = "sub"
   role_type       = "jwt"
   token_ttl       = 3600
