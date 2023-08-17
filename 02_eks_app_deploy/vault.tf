@@ -121,7 +121,7 @@ data "tls_certificate" "eks_ca" {
 resource "vault_jwt_auth_backend" "this" {
   description            = "JWT Auth Backend for Kubernetes"
   path                   = "jwt"
-  jwt_validation_pubkeys = [data.tls_certificate.eks_ca.certificates.cert_pem]
+  jwt_validation_pubkeys = [data.tls_certificate.eks_ca.certificates[0].cert_pem]
 }
 
 resource "vault_jwt_auth_backend_role" "default" {
