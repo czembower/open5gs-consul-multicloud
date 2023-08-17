@@ -117,7 +117,7 @@ resource "vault_pki_secret_backend_role" "consul" {
 resource "vault_jwt_auth_backend" "this" {
   description            = "JWT Auth Backend for Kubernetes"
   path                   = "jwt"
-  jwt_validation_pubkeys = [trimspace(var.k8s_pubkey)]
+  jwt_validation_pubkeys = [data.terraform_remote_state.infra.outputs.eks_cluster_data.ca_data]
 }
 
 resource "vault_jwt_auth_backend_role" "default" {
