@@ -1,3 +1,4 @@
+### Root CA ###
 resource "vault_mount" "pki" {
   path = "pki"
   type = "pki"
@@ -39,6 +40,7 @@ resource "vault_pki_secret_backend_config_urls" "pki_config_urls" {
   crl_distribution_points = ["http://127.0.0.1/v1/pki/crl"]
 }
 
+### Intermediate CA ###
 resource "vault_mount" "pki_int" {
   path = "pki_int"
   type = "pki"
@@ -108,4 +110,34 @@ resource "vault_pki_secret_backend_role" "consul" {
   ttl            = 86400
   no_store       = true
   generate_lease = false
+}
+
+### Auth Methods ###
+
+resource "vault_jwt_auth_backend" "this" {
+  description            = "JWT Auth Backend for Kubernetes"
+  path                   = "jwt"
+  jwt_validation_pubkeys = [trimspace(var.k8s_pubkey)]
+}
+
+resource "vault_jwt_auth_backend_role" "default" {
+  backend         = vault_jwt_auth_backend.this.path
+  role_name       = "default"
+  bound_audiences = ["https://kubernetes.default.svc.cluster.local", "vault://vault-issuer-jwt"]
+  user_claim      = "sub"
+  role_type       = "jwt"
+  token_ttl       = 3600
+  token_type      = "default"
+  token_policies  = ["default"]
+}
+
+resource "vault_jwt_auth_backend_role" "consul" {
+  backend         = vault_jwt_auth_backend.this.path
+  role_name       = "consul-role"
+  bound_audiences = ["https://kubernetes.default.svc.cluster.local", "vault://vault-issuer-jwt"]
+  user_claim      = "sub"
+  role_type       = "jwt"
+  token_ttl       = 3600
+  token_type      = "default"
+  token_policies  = ["consul-policy"]
 }
