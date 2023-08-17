@@ -114,10 +114,14 @@ resource "vault_pki_secret_backend_role" "consul" {
 
 ### Auth Methods ###
 
+data "tls_certificate" "eks_ca" {
+  content = base64decode(data.terraform_remote_state.infra.outputs.eks_cluster_data.ca_data)
+}
+
 resource "vault_jwt_auth_backend" "this" {
   description            = "JWT Auth Backend for Kubernetes"
   path                   = "jwt"
-  jwt_validation_pubkeys = [data.terraform_remote_state.infra.outputs.eks_cluster_data.ca_data]
+  jwt_validation_pubkeys = []
 }
 
 resource "vault_jwt_auth_backend_role" "default" {
