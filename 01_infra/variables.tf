@@ -20,6 +20,10 @@ variable "TFC_CONFIGURATION_VERSION_GIT_BRANCH" {
   type = string
 }
 
+variable "TFC_PROJECT_NAME" {
+  type = string
+}
+
 variable "vnet_cidr" {
   type    = string
   default = "10.100.0.0/20"
