@@ -59,6 +59,11 @@ variable "azure_hvn_cidr" {
   default = "172.26.16.0/20"
 }
 
+variable "jump_allowed_cidr" {
+  type    = string
+  default = null
+}
+
 locals {
   private_subnets = [cidrsubnet(var.vpc_cidr, 2, 0), cidrsubnet(var.vpc_cidr, 2, 1), cidrsubnet(var.vpc_cidr, 2, 2)]    // 3x /26
   public_subnets  = [cidrsubnet(var.vpc_cidr, 4, 12), cidrsubnet(var.vpc_cidr, 4, 13), cidrsubnet(var.vpc_cidr, 4, 14)] // 3x /28
