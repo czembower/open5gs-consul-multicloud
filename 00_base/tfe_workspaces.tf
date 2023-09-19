@@ -13,7 +13,7 @@ resource "tfe_workspace" "k8s" {
   organization      = local.tfc_org
   agent_pool_id     = tfe_agent_pool.aws.id
   execution_mode    = "agent"
-  working_directory = "01_infra"
+  working_directory = "01_k8s"
   project_id        = data.tfe_project.this.id
 
   vcs_repo {
