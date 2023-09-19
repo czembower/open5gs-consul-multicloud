@@ -23,6 +23,15 @@ resource "tfe_workspace" "k8s" {
   }
 }
 
+resource "tfe_variable" "jump_allowed_cidr" {
+  key          = "jump_allowed_cidr"
+  value        = var.jump_allowed_cidr
+  category     = "terraform"
+  hcl          = false
+  sensitive    = false
+  workspace_id = tfe_workspace.k8s.id
+}
+
 resource "tfe_workspace" "eks_app_deploy" {
   name              = "02_eks_app_deploy"
   organization      = local.tfc_org
