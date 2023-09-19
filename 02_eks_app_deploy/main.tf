@@ -35,7 +35,7 @@ terraform {
   backend "remote" {
     organization = "team-rsa"
     workspaces {
-      name = "02_k8s_app_deploy"
+      name = "02_eks_app_deploy"
     }
   }
   required_providers {
