@@ -34,11 +34,6 @@ variable "vpc_cidr" {
   default = "10.200.0.0/20"
 }
 
-variable "jump_allowed_cidr" {
-  type    = string
-  default = null
-}
-
 variable "hcp_client_id" {
   type    = string
   default = null

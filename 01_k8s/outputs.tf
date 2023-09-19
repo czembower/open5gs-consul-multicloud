@@ -8,3 +8,7 @@ output "eks_cluster_data" {
 output "eks_managed_node_groups" {
   value = module.eks.eks_managed_node_groups
 }
+
+output "jump_iam_role" {
+  value = aws_iam_role.jump.arn
+}

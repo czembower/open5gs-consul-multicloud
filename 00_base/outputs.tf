@@ -16,7 +16,3 @@ output "hcp_vault_admin_token" {
   value     = hcp_vault_cluster_admin_token.aws_vault.token
   sensitive = true
 }
-
-output "jump_iam_role" {
-  value = aws_iam_role.jump.arn
-}
