@@ -19,6 +19,26 @@ provider "hcp" {
   project_id    = var.hcp_project_id
 }
 
+provider "azurerm" {
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = true
+    }
+
+    virtual_machine_scale_set {
+      roll_instances_when_required = false
+    }
+  }
+}
+
+provider "aws" {
+  region = var.aws_region
+
+  default_tags {
+    tags = local.tags
+  }
+}
+
 terraform {
   backend "remote" {
     organization = "team-rsa"
