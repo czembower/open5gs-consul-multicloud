@@ -115,7 +115,7 @@ resource "vault_pki_secret_backend_role" "consul" {
 ### Auth Methods ###
 
 data "tls_certificate" "eks_ca" {
-  content = base64decode(data.terraform_remote_state.infra.outputs.eks_cluster_data.ca_data)
+  content = base64decode(data.terraform_remote_state.eks.outputs.eks_cluster_data.ca_data)
 }
 
 resource "vault_jwt_auth_backend" "this" {
