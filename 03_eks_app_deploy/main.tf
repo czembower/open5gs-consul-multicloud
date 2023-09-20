@@ -25,6 +25,11 @@ provider "vault" {
   token   = data.terraform_remote_state.base.outputs.hcp_vault_admin_token
 }
 
+provider "consul" {
+  address = data.terraform_remote_state.base.outputs.hcp_consul_azure.consul_public_endpoint_url
+  token   = data.terraform_remote_state.base.outputs.hcp_consul_root_token
+}
+
 # RANDOM ID TO USE FOR UNIQUE RESOURCE NAMING
 resource "random_id" "this" {
   byte_length = 4
