@@ -23,7 +23,7 @@ resource "tfe_workspace" "eks" {
   }
 }
 
-resource "tfe_variable" "jump_allowed_cidr" {
+resource "tfe_variable" "aws_jump_allowed_cidr" {
   key          = "jump_allowed_cidr"
   value        = var.jump_allowed_cidr
   category     = "terraform"
@@ -32,13 +32,37 @@ resource "tfe_variable" "jump_allowed_cidr" {
   workspace_id = tfe_workspace.eks.id
 }
 
+resource "tfe_workspace" "aks" {
+  name              = "02_aks"
+  organization      = local.tfc_org
+  agent_pool_id     = tfe_agent_pool.azure.id
+  execution_mode    = "agent"
+  working_directory = "02_aks"
+  project_id        = data.tfe_project.this.id
+
+  vcs_repo {
+    identifier     = "czembower/open5gs-consul-multicloud"
+    branch         = "main"
+    oauth_token_id = data.tfe_oauth_client.client.oauth_token_id
+  }
+}
+
+resource "tfe_variable" "azure_jump_allowed_cidr" {
+  key          = "jump_allowed_cidr"
+  value        = var.jump_allowed_cidr
+  category     = "terraform"
+  hcl          = false
+  sensitive    = false
+  workspace_id = tfe_workspace.aks.id
+}
+
 resource "tfe_variable" "arm_client_id" {
   key          = "ARM_CLIENT_ID"
   value        = var.ARM_CLIENT_ID
   category     = "env"
   hcl          = false
   sensitive    = true
-  workspace_id = tfe_workspace.eks.id
+  workspace_id = tfe_workspace.aks.id
 }
 
 resource "tfe_variable" "arm_client_secret" {
@@ -47,16 +71,25 @@ resource "tfe_variable" "arm_client_secret" {
   category     = "env"
   hcl          = false
   sensitive    = true
-  workspace_id = tfe_workspace.eks.id
+  workspace_id = tfe_workspace.aks.id
 }
 
-resource "tfe_variable" "arm_client_secret" {
+resource "tfe_variable" "arm_subscription_id" {
   key          = "ARM_SUBSCRIPTION_ID"
   value        = var.ARM_SUBSCRIPTION_ID
   category     = "env"
   hcl          = false
   sensitive    = true
-  workspace_id = tfe_workspace.eks.id
+  workspace_id = tfe_workspace.aks.id
+}
+
+resource "tfe_variable" "arm_tenant_id" {
+  key          = "ARM_TENANT_ID"
+  value        = var.ARM_TENANT_ID
+  category     = "env"
+  hcl          = false
+  sensitive    = true
+  workspace_id = tfe_workspace.aks.id
 }
 
 resource "tfe_workspace" "eks_app_deploy" {
