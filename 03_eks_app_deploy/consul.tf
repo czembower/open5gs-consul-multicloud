@@ -19,6 +19,11 @@ resource "helm_release" "consul" {
   }
 
   set {
+    name  = "global.tls.enableAutoEncrypt"
+    value = true
+  }
+
+  set {
     name  = "server.enabled"
     value = false
   }
