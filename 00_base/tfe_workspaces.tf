@@ -56,42 +56,6 @@ resource "tfe_variable" "azure_jump_allowed_cidr" {
   workspace_id = tfe_workspace.aks.id
 }
 
-resource "tfe_variable" "arm_client_id" {
-  key          = "ARM_CLIENT_ID"
-  value        = var.ARM_CLIENT_ID
-  category     = "env"
-  hcl          = false
-  sensitive    = true
-  workspace_id = tfe_workspace.aks.id
-}
-
-resource "tfe_variable" "arm_client_secret" {
-  key          = "ARM_CLIENT_SECRET"
-  value        = var.ARM_CLIENT_SECRET
-  category     = "env"
-  hcl          = false
-  sensitive    = true
-  workspace_id = tfe_workspace.aks.id
-}
-
-resource "tfe_variable" "arm_subscription_id" {
-  key          = "ARM_SUBSCRIPTION_ID"
-  value        = var.ARM_SUBSCRIPTION_ID
-  category     = "env"
-  hcl          = false
-  sensitive    = true
-  workspace_id = tfe_workspace.aks.id
-}
-
-resource "tfe_variable" "arm_tenant_id" {
-  key          = "ARM_TENANT_ID"
-  value        = var.ARM_TENANT_ID
-  category     = "env"
-  hcl          = false
-  sensitive    = true
-  workspace_id = tfe_workspace.aks.id
-}
-
 resource "tfe_workspace" "eks_app_deploy" {
   name              = "02_eks_app_deploy"
   organization      = local.tfc_org

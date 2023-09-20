@@ -7,11 +7,6 @@ variable "azure_location" {
   default = "eastus2"
 }
 
-variable "ARM_CLIENT_ID" {}
-variable "ARM_CLIENT_SECRET" {}
-variable "ARM_SUBSCRIPTION_ID" {}
-variable "ARM_TENANT_ID" {}
-
 variable "aws_region" {
   type    = string
   default = "us-east-2"
