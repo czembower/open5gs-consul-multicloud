@@ -55,7 +55,7 @@ terraform {
     }
     hcp = {
       source  = "hashicorp/hcp"
-      version = "0.70.0"
+      version = "0.69.0"
     }
   }
 }
