@@ -36,7 +36,7 @@ resource "aws_security_group" "aws_jump" {
 
 resource "aws_key_pair" "jump" {
   key_name   = "jump-${data.terraform_remote_state.base.outputs.random_id}"
-  public_key = tls_private_key.jump.public_key_openssh
+  public_key = data.terraform_remote_state.base.outputs.ssh_pubkey
 }
 
 data "template_cloudinit_config" "jump" {

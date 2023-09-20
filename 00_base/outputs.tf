@@ -40,3 +40,7 @@ output "tfc_agent_sg_id" {
 output "azure_subnet" {
   value = azurerm_subnet.this
 }
+
+output "ssh_pubkey" {
+  value = tls_private_key.jump.public_key_openssh
+}

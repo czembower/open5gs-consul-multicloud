@@ -20,7 +20,4 @@ terraform {
   }
 }
 
-resource "tls_private_key" "jump" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+

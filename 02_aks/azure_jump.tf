@@ -50,7 +50,7 @@ resource "azurerm_linux_virtual_machine" "jumpbox" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = tls_private_key.jump.public_key_openssh
+    public_key = data.terraform_remote_state.base.outputs.ssh_pubkey
   }
 
   os_disk {
