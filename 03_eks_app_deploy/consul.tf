@@ -13,7 +13,7 @@ resource "tls_private_key" "consul_ca" {
 }
 
 resource "tls_self_signed_cert" "consul_ca" {
-  private_key_pem = tls_private_key.consul_ca[0].private_key_pem
+  private_key_pem = tls_private_key.consul_ca.private_key_pem
 
   subject {
     common_name  = "Consul Root CA"
@@ -35,8 +35,8 @@ resource "kubernetes_secret" "consul_ca_cert" {
   }
 
   data = {
-    "tls.crt" = "${tls_self_signed_cert.consul_ca[0].cert_pem}"
-    "tls.key" = "${tls_private_key.consul_ca[0].private_key_pem}"
+    "tls.crt" = "${tls_self_signed_cert.consul_ca.cert_pem}"
+    "tls.key" = "${tls_private_key.consul_ca.private_key_pem}"
   }
 
   type = "kubernetes.io/tls"
