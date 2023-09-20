@@ -25,7 +25,7 @@ module "eks" {
     }
   }
 
-  vpc_id                                = data.terraform_remote_state.base.outputs.aws_vpc.id
+  vpc_id                                = data.terraform_remote_state.base.outputs.aws_vpc.vpc_id
   subnet_ids                            = data.terraform_remote_state.base.outputs.aws_vpc.private_subnets
   control_plane_subnet_ids              = data.terraform_remote_state.base.outputs.aws_vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
@@ -91,9 +91,9 @@ resource "aws_iam_role_policy_attachment" "AmazonEKS_EBS_CSI_Driver" {
 }
 
 resource "aws_security_group" "eks_additional" {
-  name        = "eks-addtl-${random_id.this.hex}"
-  description = "eks-addtl-${random_id.this.hex}"
-  vpc_id      = module.vpc.vpc_id
+  name        = "eks-addtl-${data.terraform_remote_state.base.outputs.random_id}"
+  description = "eks-addtl-${data.terraform_remote_state.base.outputs.random_id}"
+  vpc_id      = data.terraform_remote_state.base.outputs.aws_vpc.vpc_id
 
   ingress {
     from_port       = 443
@@ -106,6 +106,6 @@ resource "aws_security_group" "eks_additional" {
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
-    security_groups = [aws_security_group.tfc_agent.id]
+    security_groups = [data.terraform_remote_state.base.outputs.tfc_agent_sg_id]
   }
 }

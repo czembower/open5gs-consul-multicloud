@@ -32,3 +32,7 @@ output "azure_vnet" {
 output "aws_vpc" {
   value = module.vpc
 }
+
+output "tfc_agent_sg_id" {
+  value = aws_security_group.tfc_agent.id
+}
