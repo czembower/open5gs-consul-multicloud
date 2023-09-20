@@ -7,4 +7,8 @@ resource "consul_certificate_authority" "connect_vault" {
     RootPKIPath         = "consul-connect-root"
     IntermediatePKIPath = "consul-connect-intermediate"
   })
+
+  depends_on = [
+    vault_pki_secret_backend_intermediate_set_signed.intermediate
+  ]
 }
