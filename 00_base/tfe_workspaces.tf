@@ -8,12 +8,12 @@ data "tfe_project" "this" {
   organization = local.tfc_org
 }
 
-resource "tfe_workspace" "k8s" {
-  name              = "01_k8s"
+resource "tfe_workspace" "eks" {
+  name              = "01_eks"
   organization      = local.tfc_org
   agent_pool_id     = tfe_agent_pool.aws.id
   execution_mode    = "agent"
-  working_directory = "01_k8s"
+  working_directory = "01_eks"
   project_id        = data.tfe_project.this.id
 
   vcs_repo {
@@ -29,7 +29,34 @@ resource "tfe_variable" "jump_allowed_cidr" {
   category     = "terraform"
   hcl          = false
   sensitive    = false
-  workspace_id = tfe_workspace.k8s.id
+  workspace_id = tfe_workspace.eks.id
+}
+
+resource "tfe_variable" "arm_client_id" {
+  key          = "ARM_CLIENT_ID"
+  value        = var.ARM_CLIENT_ID
+  category     = "env"
+  hcl          = false
+  sensitive    = true
+  workspace_id = tfe_workspace.eks.id
+}
+
+resource "tfe_variable" "arm_client_secret" {
+  key          = "ARM_CLIENT_SECRET"
+  value        = var.ARM_CLIENT_SECRET
+  category     = "env"
+  hcl          = false
+  sensitive    = true
+  workspace_id = tfe_workspace.eks.id
+}
+
+resource "tfe_variable" "arm_client_secret" {
+  key          = "ARM_SUBSCRIPTION_ID"
+  value        = var.ARM_SUBSCRIPTION_ID
+  category     = "env"
+  hcl          = false
+  sensitive    = true
+  workspace_id = tfe_workspace.eks.id
 }
 
 resource "tfe_workspace" "eks_app_deploy" {

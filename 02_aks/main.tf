@@ -12,33 +12,16 @@ provider "azurerm" {
 
 provider "azuread" {}
 
-provider "aws" {
-  region = var.aws_region
-
-  default_tags {
-    tags = local.tags
-  }
-}
-
-# TERRAFORM BLOCK CAN BE MODIFIED FOR OPEN SOURCE USAGE
 terraform {
   backend "remote" {
     organization = "team-rsa"
     workspaces {
-      name = "01_k8s"
+      name = "02_aks"
     }
   }
   required_providers {
-    azurerm = {
+    aws = {
       source = "hashicorp/azurerm"
     }
-    aws = {
-      source = "hashicorp/aws"
-    }
   }
-}
-
-resource "tls_private_key" "jump" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
 }

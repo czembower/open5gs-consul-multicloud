@@ -17,7 +17,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_security_group" "aws_jump" {
   name        = "jump-${data.terraform_remote_state.base.outputs.random_id}"
   description = "jump-${data.terraform_remote_state.base.outputs.random_id}"
-  vpc_id      = data.terraform_remote_state.base.outputs.aws_vpc.id
+  vpc_id      = data.terraform_remote_state.base.outputs.aws_vpc.vpc_id
 
   egress {
     from_port   = 0

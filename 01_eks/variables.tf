@@ -22,11 +22,11 @@ variable "TFC_CONFIGURATION_VERSION_GIT_BRANCH" {
 }
 
 locals {
-  tfc_org        = split("/", var.TFC_WORKSPACE_SLUG)[0]
-  tfc_workspace  = split("/", var.TFC_WORKSPACE_SLUG)[1]
-  service_cidr   = cidrsubnet(var.aks_cidr, 2, 0)
-  pod_cidr       = cidrsubnet(var.aks_cidr, 2, 2)
-  dns_service_ip = cidrhost(local.service_cidr, 10)
+  tfc_org       = split("/", var.TFC_WORKSPACE_SLUG)[0]
+  tfc_workspace = split("/", var.TFC_WORKSPACE_SLUG)[1]
+  # service_cidr   = cidrsubnet(var.aks_cidr, 2, 0)
+  # pod_cidr       = cidrsubnet(var.aks_cidr, 2, 2)
+  # dns_service_ip = cidrhost(local.service_cidr, 10)
 
   tags = {
     TERRAFORM     = true
