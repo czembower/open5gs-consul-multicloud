@@ -57,11 +57,11 @@ resource "tfe_variable" "azure_jump_allowed_cidr" {
 }
 
 resource "tfe_workspace" "eks_app_deploy" {
-  name              = "02_eks_app_deploy"
+  name              = "03_eks_app_deploy"
   organization      = local.tfc_org
   agent_pool_id     = tfe_agent_pool.aws.id
   execution_mode    = "agent"
-  working_directory = "02_eks_app_deploy"
+  working_directory = "03_eks_app_deploy"
   project_id        = data.tfe_project.this.id
 
   vcs_repo {
