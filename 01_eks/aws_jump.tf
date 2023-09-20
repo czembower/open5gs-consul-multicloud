@@ -25,19 +25,8 @@ resource "aws_security_group" "aws_jump" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.jump_allowed_cidr]
-  }
 }
 
-resource "aws_key_pair" "jump" {
-  key_name   = "jump-${data.terraform_remote_state.base.outputs.random_id}"
-  public_key = data.terraform_remote_state.base.outputs.ssh_pubkey
-}
 
 data "template_cloudinit_config" "jump" {
   gzip          = true
@@ -64,8 +53,7 @@ resource "aws_instance" "this" {
     }
   }
   instance_type          = "t3.nano"
-  subnet_id              = data.terraform_remote_state.base.outputs.aws_vpc.public_subnets[0]
-  key_name               = aws_key_pair.jump.key_name
+  subnet_id              = data.terraform_remote_state.base.outputs.aws_vpc.private_subnets[0]
   user_data              = data.template_cloudinit_config.jump.rendered
   iam_instance_profile   = aws_iam_instance_profile.jump.id
   vpc_security_group_ids = [aws_security_group.aws_jump.id]
