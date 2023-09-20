@@ -4,8 +4,8 @@ data "azurerm_role_definition" "contributor" {
 
 resource "azurerm_user_assigned_identity" "aks" {
   resource_group_name = data.azure_resource_group.this.name
-  location            = adata.azure_resource_group.this.location
-  name                = "uaid-aks-${random_id.this.hex}"
+  location            = data.azure_resource_group.this.location
+  name                = "uaid-aks-${data.terraform_remote_state.base.outputs.random_id}"
 }
 
 resource "azurerm_role_assignment" "aks" {
@@ -28,7 +28,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     azurerm_nat_gateway_public_ip_association.this
   ]
 
-  name                              = "aks-rsa-${random_id.this.hex}"
+  name                              = "aks-rsa-${data.terraform_remote_state.base.outputs.random_id}"
   location                          = data.azure_resource_group.this.location
   resource_group_name               = data.azure_resource_group.this.name
   kubernetes_version                = null // latest stable

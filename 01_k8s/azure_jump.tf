@@ -1,7 +1,7 @@
 ### This file can safely be removed from the workspace if a jump server is not required. ###
 
 resource "azurerm_public_ip" "jumpbox" {
-  name                = "${random_id.this.hex}-jumpbox-pip"
+  name                = "${data.terraform_remote_state.base.outputs.random_id}-jumpbox-pip"
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   allocation_method   = "Static"
@@ -12,12 +12,12 @@ resource "azurerm_public_ip" "jumpbox" {
 
 
 resource "azurerm_network_interface" "jumpbox" {
-  name                = "${random_id.this.hex}-vm-jumpbox-nic"
+  name                = "${data.terraform_remote_state.base.outputs.random_id}-vm-jumpbox-nic"
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
 
   ip_configuration {
-    name                          = "${random_id.this.hex}-jump-ipconfig"
+    name                          = "${data.terraform_remote_state.base.outputs.random_id}-jump-ipconfig"
     subnet_id                     = azurerm_subnet.this.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.jumpbox.id
@@ -25,7 +25,7 @@ resource "azurerm_network_interface" "jumpbox" {
 }
 
 resource "azurerm_linux_virtual_machine" "jumpbox" {
-  name                = "${random_id.this.hex}-vm-jumpbox"
+  name                = "${data.terraform_remote_state.base.outputs.random_id}-vm-jumpbox"
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   size                = "Standard_D4s_v3"

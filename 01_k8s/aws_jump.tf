@@ -15,9 +15,9 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_security_group" "aws_jump" {
-  name        = "jump-${random_id.this.hex}"
-  description = "jump-${random_id.this.hex}"
-  vpc_id      = module.vpc.vpc_id
+  name        = "jump-${data.terraform_remote_state.base.outputs.random_id}"
+  description = "jump-${data.terraform_remote_state.base.outputs.random_id}"
+  vpc_id      = data.terraform_remote_state.base.outputs.aws_vpc.id
 
   egress {
     from_port   = 0
@@ -35,7 +35,7 @@ resource "aws_security_group" "aws_jump" {
 }
 
 resource "aws_key_pair" "jump" {
-  key_name   = "jump-${random_id.this.hex}"
+  key_name   = "jump-${data.terraform_remote_state.base.outputs.random_id}"
   public_key = tls_private_key.jump.public_key_openssh
 }
 
@@ -76,7 +76,7 @@ resource "aws_instance" "this" {
 }
 
 resource "aws_iam_role" "jump" {
-  name = "jump-${random_id.this.hex}-iamrole"
+  name = "jump-${data.terraform_remote_state.base.outputs.random_id}-iamrole"
 
   assume_role_policy = <<EOF
 {
@@ -96,12 +96,12 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "jump" {
-  name = "jump-${random_id.this.hex}-instance-profile"
+  name = "jump-${data.terraform_remote_state.base.outputs.random_id}-instance-profile"
   role = aws_iam_role.jump.id
 }
 
 resource "aws_iam_role_policy" "jump" {
-  name   = "jump-${random_id.this.hex}-iampolicy"
+  name   = "jump-${data.terraform_remote_state.base.outputs.random_id}-iampolicy"
   role   = aws_iam_role.jump.id
   policy = <<EOF
 {
