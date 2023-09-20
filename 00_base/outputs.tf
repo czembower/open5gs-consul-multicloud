@@ -36,3 +36,7 @@ output "aws_vpc" {
 output "tfc_agent_sg_id" {
   value = aws_security_group.tfc_agent.id
 }
+
+output "azure_subnet" {
+  value = azurerm_subnet.this
+}

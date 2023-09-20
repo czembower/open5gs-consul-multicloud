@@ -1,3 +1,5 @@
+data "azurerm_subscription" "this" {}
+
 data "terraform_remote_state" "base" {
   backend = "remote"
 

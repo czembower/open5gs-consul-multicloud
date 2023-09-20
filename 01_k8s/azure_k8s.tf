@@ -23,11 +23,6 @@ resource "azurerm_role_assignment" "aks" {
 }
 
 resource "azurerm_kubernetes_cluster" "this" {
-  depends_on = [
-    azurerm_subnet_nat_gateway_association.private,
-    azurerm_nat_gateway_public_ip_association.this
-  ]
-
   name                              = "aks-rsa-${data.terraform_remote_state.base.outputs.random_id}"
   location                          = data.azurerm_resource_group.this.location
   resource_group_name               = data.azurerm_resource_group.this.name
@@ -45,7 +40,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     max_count              = 5
     vm_size                = "Standard_D2as_v4"
     type                   = "VirtualMachineScaleSets"
-    vnet_subnet_id         = azurerm_subnet.this.id
+    vnet_subnet_id         = data.terraform_remote_state.base.outputs.azure_subnet.id
     enable_host_encryption = false
     zones                  = null
 
