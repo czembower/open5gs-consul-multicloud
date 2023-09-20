@@ -34,7 +34,7 @@ resource "vault_pki_secret_backend_config_ca" "ca_config" {
   pem_bundle = "${tls_private_key.ca_key.private_key_pem}\n${tls_self_signed_cert.ca_cert.cert_pem}"
 }
 
-resource "vault_pki_secret_backend_config_urls" "pki_config_urls" {
+resource "vault_pki_secret_backend_config_urls" "pki_consul_root_config_urls" {
   backend                 = vault_mount.pki_consul_root.path
   issuing_certificates    = ["http://127.0.0.1/v1/${vault_mount.pki_consul_root.path}/ca"]
   crl_distribution_points = ["http://127.0.0.1/v1/${vault_mount.pki_consul_root.path}/crl"]
@@ -49,7 +49,7 @@ resource "vault_mount" "pki_consul_int" {
   max_lease_ttl_seconds     = 7776000
 }
 
-resource "vault_pki_secret_backend_config_urls" "pki_consul_config_urls" {
+resource "vault_pki_secret_backend_config_urls" "pki_consul_intermediate_config_urls" {
   backend                 = vault_mount.pki_consul_int.path
   issuing_certificates    = ["http://127.0.0.1/v1/${vault_mount.pki_consul_int.path}/ca"]
   crl_distribution_points = ["http://127.0.0.1/v1/${vault_mount.pki_consul_int.path}/crl"]
