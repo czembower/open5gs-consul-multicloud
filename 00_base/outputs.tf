@@ -22,7 +22,7 @@ output "random_id" {
 }
 
 output "azure_resource_group_name" {
-  value = azure_resource_group.this.name
+  value = azurerm_resource_group.this.name
 }
 
 output "azure_vnet" {
