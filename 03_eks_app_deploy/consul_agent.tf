@@ -48,35 +48,35 @@ resource "helm_release" "consul" {
   repository = "https://helm.releases.hashicorp.com"
   chart      = "consul"
 
-  set {
-    name  = "global.tls.enabled"
-    value = true
-  }
+  # set {
+  #   name  = "global.tls.enabled"
+  #   value = true
+  # }
 
-  set {
-    name  = "global.tls.enableAutoEncrypt"
-    value = true
-  }
+  # set {
+  #   name  = "global.tls.enableAutoEncrypt"
+  #   value = true
+  # }
 
-  set {
-    name  = "global.tls.caCert.secretName"
-    value = kubernetes_secret.consul_ca_cert.metadata[0].name
-  }
+  # set {
+  #   name  = "global.tls.caCert.secretName"
+  #   value = kubernetes_secret.consul_ca_cert.metadata[0].name
+  # }
 
-  set {
-    name  = "global.tls.caCert.secretKey"
-    value = "tls.crt"
-  }
+  # set {
+  #   name  = "global.tls.caCert.secretKey"
+  #   value = "tls.crt"
+  # }
 
-  set {
-    name  = "global.tls.caKey.secretName"
-    value = kubernetes_secret.consul_ca_cert.metadata[0].name
-  }
+  # set {
+  #   name  = "global.tls.caKey.secretName"
+  #   value = kubernetes_secret.consul_ca_cert.metadata[0].name
+  # }
 
-  set {
-    name  = "global.tls.caKey.secretKey"
-    value = "tls.key"
-  }
+  # set {
+  #   name  = "global.tls.caKey.secretKey"
+  #   value = "tls.key"
+  # }
 
   set {
     name  = "server.enabled"
