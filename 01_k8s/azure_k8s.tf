@@ -3,8 +3,8 @@ data "azurerm_role_definition" "contributor" {
 }
 
 resource "azurerm_user_assigned_identity" "aks" {
-  resource_group_name = data.azurermm_resource_group.this.name
-  location            = data.azurermm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
+  location            = data.azurerm_resource_group.this.location
   name                = "uaid-aks-${data.terraform_remote_state.base.outputs.random_id}"
 }
 

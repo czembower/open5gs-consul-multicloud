@@ -64,7 +64,7 @@ resource "aws_instance" "this" {
     }
   }
   instance_type          = "t3.nano"
-  subnet_id              = module.vpc.public_subnets[0]
+  subnet_id              = data.terraform_remote_state.base.outputs.aws_vpc.public_subnets[0]
   key_name               = aws_key_pair.jump.key_name
   user_data              = data.template_cloudinit_config.jump.rendered
   iam_instance_profile   = aws_iam_instance_profile.jump.id

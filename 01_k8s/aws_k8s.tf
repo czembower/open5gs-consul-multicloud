@@ -61,7 +61,7 @@ module "eks" {
 }
 
 resource "aws_iam_role" "AmazonEKS_EBS_CSI_Driver" {
-  name = "AmazonEKSEBSCSIDriverRole-${random_id.this.hex}"
+  name = "AmazonEKSEBSCSIDriverRole-${data.terraform_remote_state.base.outputs.random_id}"
 
   assume_role_policy = <<POLICY
 {

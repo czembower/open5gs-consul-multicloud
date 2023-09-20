@@ -2,8 +2,8 @@
 
 resource "azurerm_public_ip" "jumpbox" {
   name                = "${data.terraform_remote_state.base.outputs.random_id}-jumpbox-pip"
-  resource_group_name = data.azure_resource_group.this.name
-  location            = data.azure_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
+  location            = data.azurerm_resource_group.this.location
   allocation_method   = "Static"
   sku                 = "Standard"
 
@@ -13,8 +13,8 @@ resource "azurerm_public_ip" "jumpbox" {
 
 resource "azurerm_network_interface" "jumpbox" {
   name                = "${data.terraform_remote_state.base.outputs.random_id}-vm-jumpbox-nic"
-  location            = data.azure_resource_group.this.location
-  resource_group_name = data.azure_resource_group.this.name
+  location            = data.azurerm_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
 
   ip_configuration {
     name                          = "${data.terraform_remote_state.base.outputs.random_id}-jump-ipconfig"
@@ -26,8 +26,8 @@ resource "azurerm_network_interface" "jumpbox" {
 
 resource "azurerm_linux_virtual_machine" "jumpbox" {
   name                = "${data.terraform_remote_state.base.outputs.random_id}-vm-jumpbox"
-  resource_group_name = data.azure_resource_group.this.name
-  location            = data.azure_resource_group.this.location
+  resource_group_name = data.azurerm_resource_group.this.name
+  location            = data.azurerm_resource_group.this.location
   size                = "Standard_D4s_v3"
   admin_username      = "azureuser"
   priority            = "Spot"
