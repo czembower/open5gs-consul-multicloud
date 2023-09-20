@@ -10,7 +10,7 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
     mapRoles = yamlencode(concat(
       [
         {
-          rolearn  = "${data.terraform_remote_state.infra.outputs.jump_iam_role}"
+          rolearn  = "${data.terraform_remote_state.eks.outputs.jump_iam_role}"
           username = "jump:{{SessionName}}"
           groups = [
             "system:masters"
@@ -26,7 +26,7 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
         #   ]
         # },
         {
-          rolearn  = data.terraform_remote_state.infra.outputs.eks_managed_node_groups.blue.iam_role_arn
+          rolearn  = data.terraform_remote_state.eks.outputs.eks_managed_node_groups.blue.iam_role_arn
           username = "system:node:{{EC2PrivateDNSName}}"
           groups = [
             "system:bootstrappers",
@@ -34,7 +34,7 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
           ]
         },
         {
-          rolearn  = data.terraform_remote_state.infra.outputs.eks_managed_node_groups.green.iam_role_arn
+          rolearn  = data.terraform_remote_state.eks.outputs.eks_managed_node_groups.green.iam_role_arn
           username = "system:node:{{EC2PrivateDNSName}}"
           groups = [
             "system:bootstrappers",
