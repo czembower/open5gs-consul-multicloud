@@ -3,7 +3,7 @@ data "aws_partition" "current" {}
 
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
-  cluster_name = "eks-cluster-${random_id.this.hex}"
+  cluster_name = "eks-cluster-${data.terraform_remote_state.base.outputs.random_id}"
 
   cluster_endpoint_public_access = false
 
@@ -25,9 +25,9 @@ module "eks" {
     }
   }
 
-  vpc_id                                = module.vpc.vpc_id
-  subnet_ids                            = module.vpc.private_subnets
-  control_plane_subnet_ids              = module.vpc.private_subnets
+  vpc_id                                = data.terraform_remote_state.base.outputs.aws_vpc.id
+  subnet_ids                            = data.terraform_remote_state.base.outputs.aws_vpc.private_subnets
+  control_plane_subnet_ids              = data.terraform_remote_state.base.outputs.aws_vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_additional.id]
   # iam_role_additional_policies = {
   #   AmazonEBSCSIDriverPolicy = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
