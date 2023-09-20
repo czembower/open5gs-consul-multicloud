@@ -48,6 +48,10 @@ resource "helm_release" "consul" {
   repository = "https://helm.releases.hashicorp.com"
   chart      = "consul"
 
+  depends_on = [
+    consul_certificate_authority.connect_vault
+  ]
+
   # set {
   #   name  = "global.tls.enabled"
   #   value = true
