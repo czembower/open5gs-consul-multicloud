@@ -57,16 +57,6 @@ resource "helm_release" "consul" {
     value = "aws-${var.aws_region}"
   }
 
-  set {
-    name  = "global.tls.enabled"
-    value = true
-  }
-
-  set {
-    name  = "global.tls.enableAutoEncrypt"
-    value = true
-  }
-
   # set {
   #   name  = "global.tls.caCert.secretName"
   #   value = kubernetes_secret.consul_ca_cert.metadata[0].name
@@ -141,4 +131,24 @@ resource "helm_release" "consul" {
     name  = "secretsBackend.vault.consulCARole"
     value = "consul"
   }
+
+  set {
+    name  = "secretsBackend.vault.ca"
+    value = "consul"
+  }
+
+  set {
+    name  = "global.tls.enabled"
+    value = true
+  }
+
+  set {
+    name  = "global.tls.enableAutoEncrypt"
+    value = true
+  }
+
+  # set {
+  #   name  = "global.tls.caCert.secretName"
+  #   value = ""
+  # }
 }
