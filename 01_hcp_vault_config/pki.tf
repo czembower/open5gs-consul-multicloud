@@ -8,7 +8,7 @@ resource "tls_self_signed_cert" "consul_connect_ca_cert" {
   private_key_pem = tls_private_key.consul_connect_ca_key.private_key_pem
 
   subject {
-    common_name  = "${vault_mount.pki_consul_root.path} Certificate Authority"
+    common_name  = "${vault_mount.pki_consul_connect_root.path} Certificate Authority"
     organization = "HashiCorp"
   }
 
@@ -39,8 +39,8 @@ resource "vault_pki_secret_backend_config_ca" "consul_connect_ca_config" {
 resource "vault_pki_secret_backend_config_urls" "pki_consul_root_config_urls" {
   namespace               = vault_namespace.consul.path
   backend                 = vault_mount.pki_consul_connect_root.path
-  issuing_certificates    = ["http://127.0.0.1/v1/${vault_mount.pki_consul_root.path}/ca"]
-  crl_distribution_points = ["http://127.0.0.1/v1/${vault_mount.pki_consul_root.path}/crl"]
+  issuing_certificates    = ["http://127.0.0.1/v1/${vault_mount.pki_consul_connect_root.path}/ca"]
+  crl_distribution_points = ["http://127.0.0.1/v1/${vault_mount.pki_consul_connect_root.path}/crl"]
 }
 
 ### Intermediate CA ###
@@ -78,10 +78,10 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "consul_connect_in
 
 resource "vault_pki_secret_backend_root_sign_intermediate" "consul_connect_intermediate" {
   namespace    = vault_namespace.consul.path
-  depends_on   = [vault_pki_secret_backend_intermediate_cert_request.consul_connect_intermediate, vault_pki_secret_backend_config_ca.ca_config]
+  depends_on   = [vault_pki_secret_backend_intermediate_cert_request.consul_connect_intermediate, vault_pki_secret_backend_config_ca.consul_connect_ca_config]
   backend      = vault_mount.pki_consul_connect_root.path
   csr          = vault_pki_secret_backend_intermediate_cert_request.consul_connect_intermediate.csr
-  common_name  = "${vault_mount.pki_consul_int.path} Certificate Authority"
+  common_name  = "${vault_mount.pki_consul_connect_int.path} Certificate Authority"
   organization = "HashiCorp"
   ttl          = 7776000
 
