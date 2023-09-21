@@ -1,7 +1,8 @@
 ### Root CA ###
 resource "vault_mount" "pki_consul_root" {
-  path = "consul-connect-root"
-  type = "pki"
+  namespace = vault_namespace.consul.path
+  path      = "consul-connect-root"
+  type      = "pki"
 
   default_lease_ttl_seconds = 31536000
   max_lease_ttl_seconds     = 31536000
@@ -29,12 +30,14 @@ resource "tls_self_signed_cert" "ca_cert" {
 }
 
 resource "vault_pki_secret_backend_config_ca" "ca_config" {
+  namespace  = vault_namespace.consul.path
   depends_on = [vault_mount.pki_consul_root, tls_private_key.ca_key, tls_self_signed_cert.ca_cert]
   backend    = vault_mount.pki_consul_root.path
   pem_bundle = "${tls_private_key.ca_key.private_key_pem}\n${tls_self_signed_cert.ca_cert.cert_pem}"
 }
 
 resource "vault_pki_secret_backend_config_urls" "pki_consul_root_config_urls" {
+  namespace               = vault_namespace.consul.path
   backend                 = vault_mount.pki_consul_root.path
   issuing_certificates    = ["http://127.0.0.1/v1/${vault_mount.pki_consul_root.path}/ca"]
   crl_distribution_points = ["http://127.0.0.1/v1/${vault_mount.pki_consul_root.path}/crl"]
@@ -42,20 +45,23 @@ resource "vault_pki_secret_backend_config_urls" "pki_consul_root_config_urls" {
 
 ### Intermediate CA ###
 resource "vault_mount" "pki_consul_int" {
-  path = "consul-connect-intermediate"
-  type = "pki"
+  namespace = vault_namespace.consul.path
+  path      = "consul-connect-intermediate"
+  type      = "pki"
 
   default_lease_ttl_seconds = 7776000
   max_lease_ttl_seconds     = 7776000
 }
 
 resource "vault_pki_secret_backend_config_urls" "pki_consul_intermediate_config_urls" {
+  namespace               = vault_namespace.consul.path
   backend                 = vault_mount.pki_consul_int.path
   issuing_certificates    = ["http://127.0.0.1/v1/${vault_mount.pki_consul_int.path}/ca"]
   crl_distribution_points = ["http://127.0.0.1/v1/${vault_mount.pki_consul_int.path}/crl"]
 }
 
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
+  namespace  = vault_namespace.consul.path
   depends_on = [vault_mount.pki_consul_int]
   backend    = vault_mount.pki_consul_int.path
   type       = "internal"
@@ -71,6 +77,7 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
 }
 
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
+  namespace    = vault_namespace.consul.path
   depends_on   = [vault_pki_secret_backend_intermediate_cert_request.intermediate, vault_pki_secret_backend_config_ca.ca_config]
   backend      = vault_mount.pki_consul_root.path
   csr          = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
@@ -82,11 +89,13 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate" {
+  namespace   = vault_namespace.consul.path
   backend     = vault_mount.pki_consul_int.path
   certificate = "${vault_pki_secret_backend_root_sign_intermediate.intermediate.certificate}\n${tls_self_signed_cert.ca_cert.cert_pem}"
 }
 
 resource "vault_pki_secret_backend_role" "consul" {
+  namespace          = vault_namespace.consul.path
   backend            = vault_mount.pki_consul_int.path
   name               = "consul"
   allowed_domains    = ["consul", "svc.cluster.local"]
@@ -111,37 +120,3 @@ resource "vault_pki_secret_backend_role" "consul" {
   no_store       = true
   generate_lease = false
 }
-
-### Auth Methods ###
-
-# data "tls_certificate" "eks_ca" {
-#   content = base64decode(data.terraform_remote_state.eks.outputs.eks_cluster_data.ca_data)
-# }
-
-# resource "vault_jwt_auth_backend" "this" {
-#   description            = "JWT Auth Backend for Kubernetes"
-#   path                   = "jwt"
-#   jwt_validation_pubkeys = [chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)]
-# }
-
-# resource "vault_jwt_auth_backend_role" "default" {
-#   backend         = vault_jwt_auth_backend.this.path
-#   role_name       = "default"
-#   bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
-#   user_claim      = "sub"
-#   role_type       = "jwt"
-#   token_ttl       = 3600
-#   token_type      = "default"
-#   token_policies  = ["default"]
-# }
-
-# resource "vault_jwt_auth_backend_role" "consul" {
-#   backend         = vault_jwt_auth_backend.this.path
-#   role_name       = "consul-role"
-#   bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
-#   user_claim      = "sub"
-#   role_type       = "jwt"
-#   token_ttl       = 3600
-#   token_type      = "default"
-#   token_policies  = ["consul-policy"]
-# }

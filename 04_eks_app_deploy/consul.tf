@@ -52,68 +52,59 @@ resource "helm_release" "consul" {
     consul_certificate_authority.connect_vault
   ]
 
-  # set {
-  #   name  = "global.tls.enabled"
-  #   value = true
-  # }
+  set {
+    name  = "global.datacenter"
+    value = "aws-${var.aws_region}"
+  }
 
-  # set {
-  #   name  = "global.tls.enableAutoEncrypt"
-  #   value = true
-  # }
+  set {
+    name  = "global.tls.enabled"
+    value = true
+  }
 
-  # set {
-  #   name  = "global.tls.caCert.secretName"
-  #   value = kubernetes_secret.consul_ca_cert.metadata[0].name
-  # }
+  set {
+    name  = "global.tls.enableAutoEncrypt"
+    value = true
+  }
 
-  # set {
-  #   name  = "global.tls.caCert.secretKey"
-  #   value = "tls.crt"
-  # }
+  set {
+    name  = "global.tls.caCert.secretName"
+    value = kubernetes_secret.consul_ca_cert.metadata[0].name
+  }
 
-  # set {
-  #   name  = "global.tls.caKey.secretName"
-  #   value = kubernetes_secret.consul_ca_cert.metadata[0].name
-  # }
+  set {
+    name  = "global.tls.caCert.secretKey"
+    value = "tls.crt"
+  }
 
-  # set {
-  #   name  = "global.tls.caKey.secretKey"
-  #   value = "tls.key"
-  # }
+  set {
+    name  = "global.tls.caKey.secretName"
+    value = kubernetes_secret.consul_ca_cert.metadata[0].name
+  }
+
+  set {
+    name  = "global.tls.caKey.secretKey"
+    value = "tls.key"
+  }
 
   set {
     name  = "server.enabled"
-    value = false
-  }
-
-  set {
-    name  = "externalServers.enabled"
     value = true
   }
 
-  set {
-    name  = "externalServers.hosts"
-    value = "{${split("//", data.terraform_remote_state.base.outputs.hcp_consul_azure.consul_public_endpoint_url)[1]}}"
-  }
-
-  set {
-    name  = "client.enabled"
-    value = true
-  }
-
-  set {
-    name  = "client.join"
-    value = "{${split("//", data.terraform_remote_state.base.outputs.hcp_consul_azure.consul_public_endpoint_url)[1]}}"
-  }
 
   set {
     name  = "dns.enabled"
     value = true
   }
 
-  # set {
-  #   name  = "secretsBackend.vault.enabled"
-  #   value = true
-  # }
+  set {
+    name  = "secretsBackend.vault.enabled"
+    value = true
+  }
+
+  set {
+    name  = "secretsBackend.vault.vaultNamespace"
+    value = "admin"
+  }
 }
