@@ -15,7 +15,7 @@ resource "vault_jwt_auth_backend_role" "consul" {
   namespace       = "consul"
   backend         = vault_jwt_auth_backend.this.path
   role_name       = "consul"
-  bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
+  bound_audiences = ["https://kubernetes.default.svc"]
   user_claim      = "sub"
   role_type       = "jwt"
   token_ttl       = 3600
