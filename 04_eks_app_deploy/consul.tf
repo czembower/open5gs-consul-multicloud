@@ -102,10 +102,10 @@ resource "helm_release" "consul" {
     value = "consul"
   }
 
-  set {
-    name  = "global.secretsBackend.vault.connectInjectRole"
-    value = "consul"
-  }
+  # set {
+  #   name  = "global.secretsBackend.vault.connectInjectRole"
+  #   value = "consul"
+  # }
 
   set {
     name  = "global.secretsBackend.vault.consulCARole"
