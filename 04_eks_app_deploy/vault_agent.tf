@@ -30,7 +30,7 @@ resource "helm_release" "vault" {
 
   set {
     name  = "injector.webhook.failurePolicy"
-    value = "fail"
+    value = "Fail"
   }
 
   set {
