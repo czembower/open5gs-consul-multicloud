@@ -7,7 +7,7 @@ data "tls_certificate" "eks_ca" {
 resource "vault_jwt_auth_backend" "this" {
   namespace              = "consul"
   description            = "JWT Auth Backend for Kubernetes"
-  path                   = "jwt"
+  path                   = "kubernetes"
   jwt_validation_pubkeys = [chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)]
 }
 
