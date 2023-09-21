@@ -5,12 +5,14 @@ data "tls_certificate" "eks_ca" {
 }
 
 resource "vault_jwt_auth_backend" "this" {
+  namespace              = "consul"
   description            = "JWT Auth Backend for Kubernetes"
   path                   = "jwt"
   jwt_validation_pubkeys = [chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)]
 }
 
 resource "vault_jwt_auth_backend_role" "consul" {
+  namespace       = "consul"
   backend         = vault_jwt_auth_backend.this.path
   role_name       = "consul"
   bound_audiences = ["https://kubernetes.default.svc.cluster.local"]

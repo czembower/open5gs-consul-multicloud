@@ -111,4 +111,29 @@ resource "helm_release" "consul" {
     name  = "secretsBackend.vault.vaultNamespace"
     value = "consul"
   }
+
+  set {
+    name  = "secretsBackend.vault.consulServerRole"
+    value = "consul"
+  }
+
+  set {
+    name  = "secretsBackend.vault.consulClientRole"
+    value = "consul"
+  }
+
+  set {
+    name  = "secretsBackend.vault.manageSystemACLsRole"
+    value = "consul"
+  }
+
+  set {
+    name  = "secretsBackend.vault.connectInjectRole"
+    value = "consul"
+  }
+
+  set {
+    name  = "secretsBackend.vault.consulCARole"
+    value = "consul"
+  }
 }
