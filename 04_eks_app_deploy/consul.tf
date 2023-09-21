@@ -112,10 +112,10 @@ resource "helm_release" "consul" {
     value = "consul"
   }
 
-  set {
-    name  = "secretsBackend.vault.ca"
-    value = "consul"
-  }
+  # set {
+  #   name  = "secretsBackend.vault.ca"
+  #   value = "consul"
+  # }
 
   set {
     name  = "global.tls.enabled"
