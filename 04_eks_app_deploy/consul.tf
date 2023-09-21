@@ -84,7 +84,7 @@ resource "helm_release" "consul" {
 
   set {
     name  = "global.secretsBackend.vault.vaultNamespace"
-    value = "consul"
+    value = "admin/consul"
   }
 
   set {
