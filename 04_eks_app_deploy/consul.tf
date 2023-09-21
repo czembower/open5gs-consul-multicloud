@@ -78,37 +78,37 @@ resource "helm_release" "consul" {
   }
 
   set {
-    name  = "secretsBackend.vault.enabled"
+    name  = "global.secretsBackend.vault.enabled"
     value = true
   }
 
   set {
-    name  = "secretsBackend.vault.vaultNamespace"
+    name  = "global.secretsBackend.vault.vaultNamespace"
     value = "consul"
   }
 
   set {
-    name  = "secretsBackend.vault.consulServerRole"
+    name  = "global.secretsBackend.vault.consulServerRole"
     value = "consul"
   }
 
   set {
-    name  = "secretsBackend.vault.consulClientRole"
+    name  = "global.secretsBackend.vault.consulClientRole"
     value = "consul"
   }
 
   set {
-    name  = "secretsBackend.vault.manageSystemACLsRole"
+    name  = "global.secretsBackend.vault.manageSystemACLsRole"
     value = "consul"
   }
 
   set {
-    name  = "secretsBackend.vault.connectInjectRole"
+    name  = "global.secretsBackend.vault.connectInjectRole"
     value = "consul"
   }
 
   set {
-    name  = "secretsBackend.vault.consulCARole"
+    name  = "global.secretsBackend.vault.consulCARole"
     value = "consul"
   }
 
