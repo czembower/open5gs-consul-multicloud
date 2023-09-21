@@ -57,27 +57,27 @@ resource "hcp_vault_cluster_admin_token" "aws_vault" {
 
 ## AZURE CONSUL ##
 
-resource "hcp_hvn" "azure" {
-  hvn_id         = "hvn-azure-${random_id.this.hex}"
-  cloud_provider = "azure"
-  region         = var.azure_location
-  cidr_block     = var.azure_hvn_cidr
-}
+# resource "hcp_hvn" "azure" {
+#   hvn_id         = "hvn-azure-${random_id.this.hex}"
+#   cloud_provider = "azure"
+#   region         = var.azure_location
+#   cidr_block     = var.azure_hvn_cidr
+# }
 
-resource "hcp_consul_cluster" "azure_consul" {
-  cluster_id      = "consul-cluster-${random_id.this.hex}"
-  hvn_id          = hcp_hvn.azure.hvn_id
-  tier            = "development"
-  connect_enabled = true
-  datacenter      = "azure-${random_id.this.hex}"
-  public_endpoint = true
-  size            = "x_small"
-  # primary_link    = hcp_consul_cluster.aws_consul.self_link
-}
+# resource "hcp_consul_cluster" "azure_consul" {
+#   cluster_id      = "consul-cluster-${random_id.this.hex}"
+#   hvn_id          = hcp_hvn.azure.hvn_id
+#   tier            = "development"
+#   connect_enabled = true
+#   datacenter      = "azure-${random_id.this.hex}"
+#   public_endpoint = true
+#   size            = "x_small"
+#   # primary_link    = hcp_consul_cluster.aws_consul.self_link
+# }
 
-resource "hcp_consul_cluster_root_token" "azure_consul" {
-  cluster_id = hcp_consul_cluster.azure_consul.cluster_id
-}
+# resource "hcp_consul_cluster_root_token" "azure_consul" {
+#   cluster_id = hcp_consul_cluster.azure_consul.cluster_id
+# }
 
 # resource "hcp_vault_cluster" "azure_vault" {
 #   cluster_id = "vault-cluster-azure-${random_id.this.hex}"
