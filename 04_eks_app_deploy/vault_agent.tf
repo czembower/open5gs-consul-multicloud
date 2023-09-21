@@ -29,6 +29,16 @@ resource "helm_release" "vault" {
   }
 
   set {
+    name  = "injector.webhook.failurePolicy"
+    value = "fail"
+  }
+
+  set {
+    name  = "injector.webhook.hostNetwork"
+    value = true
+  }
+
+  set {
     name  = "global.externalVaultAddr"
     value = data.terraform_remote_state.base.outputs.hcp_vault_aws.vault_public_endpoint_url
   }
