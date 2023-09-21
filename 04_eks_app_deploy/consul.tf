@@ -147,8 +147,13 @@ resource "helm_release" "consul" {
     value = true
   }
 
-  # set {
-  #   name  = "global.tls.caCert.secretName"
-  #   value = ""
-  # }
+  set {
+    name  = "global.tls.caCert.secretName"
+    value = "consul-root/cert/ca"
+  }
+
+  set {
+    name  = "server.serverCert.secretName"
+    value = "issue/consul"
+  }
 }

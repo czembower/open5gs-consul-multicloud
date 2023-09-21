@@ -97,7 +97,7 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_inte
 resource "vault_pki_secret_backend_role" "consul_connect" {
   namespace          = vault_namespace.consul.path
   backend            = vault_mount.pki_consul_connect_int.path
-  name               = "consul"
+  name               = "consul-connect"
   allowed_domains    = ["consul", "svc.cluster.local"]
   allow_subdomains   = true
   allow_glob_domains = false
