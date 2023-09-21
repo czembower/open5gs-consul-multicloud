@@ -35,7 +35,7 @@ resource "helm_release" "vault" {
 
   set {
     name  = "injector.webhook.hostNetwork"
-    value = true
+    value = false
   }
 
   set {
