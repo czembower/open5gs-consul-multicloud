@@ -117,6 +117,6 @@ resource "vault_pki_secret_backend_role" "consul" {
 
   max_ttl        = 86400
   ttl            = 86400
-  no_store       = true
-  generate_lease = false
+  no_store       = false
+  generate_lease = true
 }
