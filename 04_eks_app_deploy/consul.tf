@@ -7,40 +7,40 @@ resource "kubernetes_namespace" "consul" {
   }
 }
 
-resource "tls_private_key" "consul_ca" {
-  algorithm   = "ECDSA"
-  ecdsa_curve = "P384"
-}
+# resource "tls_private_key" "consul_ca" {
+#   algorithm   = "ECDSA"
+#   ecdsa_curve = "P384"
+# }
 
-resource "tls_self_signed_cert" "consul_ca" {
-  private_key_pem = tls_private_key.consul_ca.private_key_pem
+# resource "tls_self_signed_cert" "consul_ca" {
+#   private_key_pem = tls_private_key.consul_ca.private_key_pem
 
-  subject {
-    common_name  = "Consul Root CA"
-    organization = "HashiCorp RSA"
-  }
+#   subject {
+#     common_name  = "Consul Root CA"
+#     organization = "HashiCorp RSA"
+#   }
 
-  validity_period_hours = 175200
-  allowed_uses = [
-    "cert_signing",
-    "crl_signing"
-  ]
-  is_ca_certificate = true
-}
+#   validity_period_hours = 175200
+#   allowed_uses = [
+#     "cert_signing",
+#     "crl_signing"
+#   ]
+#   is_ca_certificate = true
+# }
 
-resource "kubernetes_secret" "consul_ca_cert" {
-  metadata {
-    name      = "consul-ca-cert"
-    namespace = kubernetes_namespace.consul.metadata[0].name
-  }
+# resource "kubernetes_secret" "consul_ca_cert" {
+#   metadata {
+#     name      = "consul-ca-cert"
+#     namespace = kubernetes_namespace.consul.metadata[0].name
+#   }
 
-  data = {
-    "tls.crt" = "${tls_self_signed_cert.consul_ca.cert_pem}"
-    "tls.key" = "${tls_private_key.consul_ca.private_key_pem}"
-  }
+#   data = {
+#     "tls.crt" = "${tls_self_signed_cert.consul_ca.cert_pem}"
+#     "tls.key" = "${tls_private_key.consul_ca.private_key_pem}"
+#   }
 
-  type = "kubernetes.io/tls"
-}
+#   type = "kubernetes.io/tls"
+# }
 
 resource "helm_release" "consul" {
   name       = "consul"
