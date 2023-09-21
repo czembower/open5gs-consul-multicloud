@@ -48,9 +48,9 @@ resource "helm_release" "consul" {
   repository = "https://helm.releases.hashicorp.com"
   chart      = "consul"
 
-  # depends_on = [
-  #   consul_certificate_authority.connect_vault
-  # ]
+  depends_on = [
+    vault_jwt_auth_backend_role.consul
+  ]
 
   set {
     name  = "global.datacenter"
@@ -90,6 +90,11 @@ resource "helm_release" "consul" {
   set {
     name  = "server.enabled"
     value = true
+  }
+
+  set {
+    name  = "server.replicas"
+    value = 3
   }
 
   set {
