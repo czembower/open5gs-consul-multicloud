@@ -10,24 +10,13 @@ resource "vault_jwt_auth_backend" "this" {
   jwt_validation_pubkeys = [chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)]
 }
 
-resource "vault_jwt_auth_backend_role" "default" {
-  backend         = vault_jwt_auth_backend.this.path
-  role_name       = "default"
-  bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
-  user_claim      = "sub"
-  role_type       = "jwt"
-  token_ttl       = 3600
-  token_type      = "default"
-  token_policies  = ["default"]
-}
-
 resource "vault_jwt_auth_backend_role" "consul" {
   backend         = vault_jwt_auth_backend.this.path
-  role_name       = "consul-role"
+  role_name       = "consul"
   bound_audiences = ["https://kubernetes.default.svc.cluster.local"]
   user_claim      = "sub"
   role_type       = "jwt"
   token_ttl       = 3600
   token_type      = "default"
-  token_policies  = ["consul-policy"]
+  token_policies  = ["consul"]
 }
