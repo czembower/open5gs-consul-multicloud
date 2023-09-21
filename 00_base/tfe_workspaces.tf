@@ -11,7 +11,6 @@ data "tfe_project" "this" {
 resource "tfe_workspace" "hcp_vault_config" {
   name                = "01_hcp_vault_config"
   organization        = local.tfc_org
-  agent_pool_id       = tfe_agent_pool.aws.id
   execution_mode      = "remote"
   working_directory   = "01_hcp_vault_config"
   project_id          = data.tfe_project.this.id
