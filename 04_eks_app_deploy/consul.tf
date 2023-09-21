@@ -92,6 +92,10 @@ resource "helm_release" "consul" {
     value = true
   }
 
+  set {
+    name  = "client.enabled"
+    value = true
+  }
 
   set {
     name  = "dns.enabled"
