@@ -48,7 +48,7 @@ module "eks" {
     }
   }
 
-  cluster_security_group_additional_rules = {
+  node_security_group_additional_rules = {
     inress_vault_injector_webhook = {
       description                   = "Access to Vault Agent Injector webhook endpoint from API server"
       protocol                      = "tcp"
