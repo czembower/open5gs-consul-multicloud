@@ -48,6 +48,11 @@ resource "helm_release" "consul" {
   }
 
   set {
+    name  = "global.secretsBackend.vault.agentAnnotations\\.vault\\.hashicorp\\.com/auth-config-path"
+    value = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  }
+
+  set {
     name  = "global.secretsBackend.vault.vaultNamespace"
     value = "admin/consul"
   }
