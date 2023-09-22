@@ -108,15 +108,15 @@ resource "aws_security_group" "eks_cluster_additional" {
   }
 }
 
-resource "aws_security_group" "eks_node_additional" {
-  name        = "eks-node-addtl-${data.terraform_remote_state.base.outputs.random_id}"
-  description = "eks-node-addtl-${data.terraform_remote_state.base.outputs.random_id}"
-  vpc_id      = data.terraform_remote_state.base.outputs.aws_vpc.vpc_id
+# resource "aws_security_group" "eks_node_additional" {
+#   name        = "eks-node-addtl-${data.terraform_remote_state.base.outputs.random_id}"
+#   description = "eks-node-addtl-${data.terraform_remote_state.base.outputs.random_id}"
+#   vpc_id      = data.terraform_remote_state.base.outputs.aws_vpc.vpc_id
 
-  # ingress {
-  #   from_port   = 8080
-  #   to_port     = 8080
-  #   protocol    = "tcp"
-  #   cidr_blocks = [data.terraform_remote_state.base.outputs.aws_vpc.vpc_cidr_block]
-  # }
-}
+#   ingress {
+#     from_port   = 8080
+#     to_port     = 8080
+#     protocol    = "tcp"
+#     cidr_blocks = [data.terraform_remote_state.base.outputs.aws_vpc.vpc_cidr_block]
+#   }
+# }
