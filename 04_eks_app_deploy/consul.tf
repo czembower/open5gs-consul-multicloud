@@ -48,8 +48,8 @@ resource "helm_release" "consul" {
   }
 
   set {
-    name  = "global.secretsBackend.vault.agentAnnotations\\.vault\\.hashicorp\\.com/auth-config-path"
-    value = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+    name  = "global.secretsBackend.vault.agentAnnotations"
+    value = "- vault.hashicorp.com/auth-config-path: /var/run/secrets/kubernetes.io/serviceaccount/token"
   }
 
   set {
