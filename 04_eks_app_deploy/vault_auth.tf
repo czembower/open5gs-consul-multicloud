@@ -4,11 +4,15 @@ data "tls_certificate" "eks_ca" {
   content = base64decode(data.terraform_remote_state.eks.outputs.eks_cluster_data.ca_data)
 }
 
+data "external" "pubkey_conversion" {
+  program = ["echo", "${chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)}", "|", "openssl", "x509", "-noout", "pubkey"]
+}
+
 resource "vault_jwt_auth_backend" "this" {
   namespace              = "consul"
   description            = "JWT Auth Backend for Kubernetes"
   path                   = "kubernetes"
-  jwt_validation_pubkeys = [chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)]
+  jwt_validation_pubkeys = [data.data.external.data.external.pubkey_conversion.result]
 }
 
 resource "vault_jwt_auth_backend_role" "consul" {
