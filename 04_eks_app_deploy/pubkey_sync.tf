@@ -14,7 +14,7 @@ resource "kubernetes_service_account_v1" "pubkey_sync" {
   }
 }
 
-resource "kubernetes_cluster_role_v1" "pubkey_sync" {
+resource "kubernetes_role_v1" "pubkey_sync" {
   metadata {
     name = "pubkey-sync-role"
   }
