@@ -29,10 +29,7 @@ module "eks" {
   subnet_ids                            = data.terraform_remote_state.base.outputs.aws_vpc.private_subnets
   control_plane_subnet_ids              = data.terraform_remote_state.base.outputs.aws_vpc.private_subnets
   cluster_additional_security_group_ids = [aws_security_group.eks_cluster_additional.id]
-  node_security_group_additional_rules  = [aws_security_group.eks_node_additional.id]
-  # iam_role_additional_policies = {
-  #   AmazonEBSCSIDriverPolicy = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-  # }
+  # node_security_group_additional_rules  = [aws_security_group.eks_node_additional.id]
 
   eks_managed_node_groups = {
     blue = {
@@ -49,16 +46,16 @@ module "eks" {
     }
   }
 
-  # fargate_profiles = {
-  #   default = {
-  #     name = "default"
-  #     selectors = [
-  #       {
-  #         namespace = "*"
-  #       }
-  #     ]
-  #   }
-  # }
+  cluster_security_group_additional_rules = {
+    inress_vault_injector_webhook = {
+      description                   = "Access to Vault Agent Injector webhook endpoint from API server"
+      protocol                      = "tcp"
+      from_port                     = 8080
+      to_port                       = 8080
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+  }
 }
 
 resource "aws_iam_role" "AmazonEKS_EBS_CSI_Driver" {
@@ -116,10 +113,10 @@ resource "aws_security_group" "eks_node_additional" {
   description = "eks-node-addtl-${data.terraform_remote_state.base.outputs.random_id}"
   vpc_id      = data.terraform_remote_state.base.outputs.aws_vpc.vpc_id
 
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = [data.terraform_remote_state.base.outputs.aws_vpc.vpc_cidr_block]
-  }
+  # ingress {
+  #   from_port   = 8080
+  #   to_port     = 8080
+  #   protocol    = "tcp"
+  #   cidr_blocks = [data.terraform_remote_state.base.outputs.aws_vpc.vpc_cidr_block]
+  # }
 }
