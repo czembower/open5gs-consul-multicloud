@@ -56,7 +56,6 @@ module "eks" {
       to_port                       = 8080
       type                          = "ingress"
       source_cluster_security_group = true
-      cidr_blocks                   = [data.terraform_remote_state.base.outputs.aws_vpc.vpc_cidr_block]
     }
   }
 }
