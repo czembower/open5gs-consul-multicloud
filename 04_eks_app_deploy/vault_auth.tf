@@ -12,7 +12,7 @@ resource "vault_jwt_auth_backend" "this" {
   namespace              = "consul"
   description            = "JWT Auth Backend for Kubernetes"
   path                   = "kubernetes"
-  jwt_validation_pubkeys = [data.data.external.data.external.pubkey_conversion.result]
+  jwt_validation_pubkeys = [data.external.pubkey_conversion.result]
 }
 
 resource "vault_jwt_auth_backend_role" "consul" {
