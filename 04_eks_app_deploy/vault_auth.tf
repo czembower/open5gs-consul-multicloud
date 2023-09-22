@@ -5,7 +5,14 @@ data "tls_certificate" "eks_ca" {
 }
 
 data "external" "pubkey_conversion" {
-  program = ["jq", "-n", "--arg", "pubkey", "\"$(echo ${chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)} | base64 -d | openssl x509 -noout -pubkey | awk '{printf \"%s\n\", $0}')\"", "'{\"public_key_pem\":$pubkey}'"]
+  program = [
+    "jq",
+    "-n",
+    "--arg",
+    "pubkey",
+    "\"$(echo ${chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)} | base64 -d | openssl x509 -noout -pubkey | awk '{printf \"%s\n\", $0}')\"",
+    "'{\"public_key_pem\":$pubkey}'"
+  ]
 }
 
 //${chomp(data.tls_certificate.eks_ca.certificates[0].cert_pem)}
