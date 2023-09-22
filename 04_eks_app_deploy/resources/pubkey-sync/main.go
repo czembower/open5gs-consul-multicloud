@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -55,8 +56,12 @@ func getSaToken() string {
 func getJwksData() []byte {
 	saToken := getSaToken()
 	authString := fmt.Sprintf("Bearer: %s", saToken)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
 	httpClient := &http.Client{
-		Timeout: 5 * time.Second,
+		Timeout:   5 * time.Second,
+		Transport: tr,
 	}
 
 	req, _ := http.NewRequest("GET", "https://kubernetes/openid/v1/jwks", nil)
