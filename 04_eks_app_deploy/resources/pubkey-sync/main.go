@@ -77,10 +77,14 @@ func getJwksData() []byte {
 		panic(err.Error())
 	}
 
+	fmt.Printf("interface payload: %v\n", payload)
+
 	jwks, err := json.Marshal(payload)
 	if err != nil {
 		panic(err.Error())
 	}
+
+	fmt.Printf("JSON-marshalled payload: %s\n", jwks)
 
 	return jwks
 }
