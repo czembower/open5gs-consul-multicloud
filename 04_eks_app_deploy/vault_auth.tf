@@ -9,7 +9,7 @@ data "kubernetes_secret_v1" "sa_public_key" {
 resource "vault_jwt_auth_backend" "this" {
   namespace              = "consul"
   description            = "JWT Auth Backend for Kubernetes"
-  path                   = "kubernetes"
+  path                   = "jwt"
   jwt_validation_pubkeys = [data.kubernetes_secret_v1.sa_public_key.data["sa.pub"]]
 }
 
