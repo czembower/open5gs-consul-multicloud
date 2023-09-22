@@ -17,6 +17,15 @@ resource "helm_release" "consul" {
     vault_jwt_auth_backend_role.consul
   ]
 
+  values = [<<EOT
+  global:
+    secretsBackend:
+      vault:
+        agentAnnotations: |
+          vault.hashicorp.com/auth-config-path: /var/run/secrets/kubernetes.io/serviceaccount/token
+  EOT
+  ]
+
   set {
     name  = "global.datacenter"
     value = "aws-${var.aws_region}"
@@ -45,11 +54,6 @@ resource "helm_release" "consul" {
   set {
     name  = "global.secretsBackend.vault.enabled"
     value = true
-  }
-
-  set {
-    name  = "global.secretsBackend.vault.agentAnnotations"
-    value = "- vault.hashicorp.com/auth-config-path: /var/run/secrets/kubernetes.io/serviceaccount/token"
   }
 
   set {
