@@ -55,7 +55,7 @@ func getSaToken() string {
 
 func getJwksData() []byte {
 	saToken := getSaToken()
-	authString := fmt.Sprintf("Bearer: %s", saToken)
+	authString := fmt.Sprintf("Bearer %s", saToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -77,14 +77,14 @@ func getJwksData() []byte {
 		panic(err.Error())
 	}
 
-	fmt.Printf("interface payload: %v\n", payload)
+	log.Printf("interface payload: %v\n", payload)
 
 	jwks, err := json.Marshal(payload)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fmt.Printf("JSON-marshalled payload: %s\n", jwks)
+	log.Printf("JSON-marshalled payload: %s\n", jwks)
 
 	return jwks
 }
