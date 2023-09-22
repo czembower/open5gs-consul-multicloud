@@ -2,43 +2,101 @@ package main
 
 import (
 	"context"
-	"crypto/x509"
-	"encoding/pem"
+	"encoding/json"
+	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"strings"
 	"time"
 
+	"github.com/golang-jwt/jwt"
+	"github.com/lestrrat-go/jwx/jwk"
 	v1 "k8s.io/api/core/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
 
-func getSaCaPubKey() string {
-	saCaCert, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt")
+func getSaToken() string {
+	var expiration time.Time
+	nowTime := time.Now().Unix()
+	saToken, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/token")
+	tokenString := string(saToken)
+
 	if err != nil {
-		log.Fatalf("error loading ca.crt file: %v", err)
+		log.Fatalf("%v", err)
 	}
 
-	certPem, _ := pem.Decode(saCaCert)
+	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
+
 	if err != nil {
-		log.Fatalf("error decoding ca.crt PEM data: %v", err)
+		log.Fatalf("error parsing service account token: %v", err)
 	}
 
-	cert, err := x509.ParseCertificate(certPem.Bytes)
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+		switch exp := claims["exp"].(type) {
+		case float64:
+			expiration = time.Unix(int64(exp), 0)
+		case json.Number:
+			v, _ := exp.Int64()
+			expiration = time.Unix(v, 0)
+		}
+		if nowTime-expiration.Unix() > 0 {
+			log.Println("token expired")
+		}
+	} else {
+		log.Fatalf("error unmarshalling jwt claims: %v", err)
+	}
+
+	return tokenString
+}
+
+func getJwksData() []byte {
+	saToken := getSaToken()
+	authString := fmt.Sprintf("Bearer: %s", saToken)
+	httpClient := &http.Client{
+		Timeout: 5 * time.Second,
+	}
+
+	req, _ := http.NewRequest("GET", "https://kubernetes/openid/v1/jwks", nil)
+	req.Header.Add("Authorization", authString)
+	resp, err := httpClient.Do(req)
 	if err != nil {
-		log.Fatalf("error parsing ca.crt: %v", err)
+		panic(err.Error())
 	}
 
-	publicKeyDer, _ := x509.MarshalPKIXPublicKey(cert.PublicKey)
-
-	publicKeyBlock := pem.Block{
-		Type:  "PUBLIC KEY",
-		Bytes: publicKeyDer,
+	var payload map[string]interface{}
+	err = json.NewDecoder(resp.Body).Decode(&payload)
+	if err != nil {
+		panic(err.Error())
 	}
-	publicKeyPem := string(pem.EncodeToMemory(&publicKeyBlock))
 
-	return publicKeyPem
+	jwks, err := json.Marshal(payload)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return jwks
+}
+
+func jwks2pem(jwksData []byte) string {
+	set, err := jwk.Parse(jwksData)
+	if err != nil {
+		log.Fatal("JWKS parsing failed")
+	} else {
+		log.Println("Successfully parsed JWKS:", string(jwksData))
+	}
+
+	pem, err := jwk.Pem(set)
+	if err != nil {
+		log.Fatal("PEM conversion failed")
+	} else {
+		log.Println("Sucessfully converted JWKS to PEM format:", strings.ReplaceAll(strings.TrimSpace(string(pem)), "\n", `\n`))
+	}
+	pemString := strings.TrimSpace(string(pem))
+
+	return pemString
 }
 
 func createK8sSecret(pubkey string) {
@@ -81,8 +139,9 @@ func createK8sSecret(pubkey string) {
 func main() {
 	log.Println("pubkey-sync started")
 	for {
-		pubKeyString := getSaCaPubKey()
-		createK8sSecret(pubKeyString)
+		jwksData := getJwksData()
+		saPem := jwks2pem(jwksData)
+		createK8sSecret(saPem)
 		time.Sleep(60 * time.Second)
 	}
 }
