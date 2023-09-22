@@ -33,7 +33,7 @@ resource "kubernetes_role_binding_v1" "pubkey_sync" {
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "Role"
-    name      = kubernetes_cluster_role_v1.pubkey_sync.metadata[0].name
+    name      = kubernetes_role_v1.pubkey_sync.metadata[0].name
   }
   subject {
     kind      = "ServiceAccount"
