@@ -79,6 +79,7 @@ func createK8sSecret(pubkey string) {
 }
 
 func main() {
+	log.Println("pubkey-sync started")
 	for {
 		pubKeyString := getSaCaPubKey()
 		createK8sSecret(pubKeyString)
