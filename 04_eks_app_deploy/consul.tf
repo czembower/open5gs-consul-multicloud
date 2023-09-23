@@ -24,6 +24,7 @@ resource "helm_release" "consul" {
       vault:
         agentAnnotations: |
           vault.hashicorp.com/auth-config-path: /var/run/secrets/kubernetes.io/serviceaccount/token
+          vault.hashicorp.com/auth-config-remove_jwt_after_reading: "false"
           vault.hashicorp.com/auth-type: "jwt"
           vault.hashicorp.com/auth-path: "auth/jwt"
           vault.hashicorp.com/log-level: "debug"
