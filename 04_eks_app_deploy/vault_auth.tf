@@ -1,16 +1,26 @@
 ## Auth Methods ###
 
-data "kubernetes_secret_v1" "sa_public_key" {
+data "kubernetes_secret_v1" "k8s_sa_public_key" {
   metadata {
-    name = "sa-public-key"
+    name = "k8s-sa-public-key"
+  }
+}
+
+data "kubernetes_secret_v1" "oidc_sa_public_key" {
+  metadata {
+    name = "oidc-sa-public-key"
   }
 }
 
 resource "vault_jwt_auth_backend" "this" {
-  namespace              = "consul"
-  description            = "JWT Auth Backend for Kubernetes"
-  path                   = "jwt"
-  jwt_validation_pubkeys = [chomp(data.kubernetes_secret_v1.sa_public_key.data["sa.pub"])]
+  namespace   = "consul"
+  description = "JWT Auth Backend for Kubernetes"
+  path        = "jwt"
+
+  jwt_validation_pubkeys = [
+    chomp(data.kubernetes_secret_v1.k8s_sa_public_key.data["sa.pub"]),
+    chomp(data.kubernetes_secret_v1.oidc_sa_public_key.data["sa.pub"])
+  ]
 }
 
 resource "vault_jwt_auth_backend_role" "consul" {
