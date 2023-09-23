@@ -19,9 +19,8 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func getSaToken() (string, string, string) {
+func getSaToken() (string, string) {
 	var issuer string
-	var kid string
 	var expiration time.Time
 	nowTime := time.Now().Unix()
 	saToken, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/token")
@@ -49,16 +48,15 @@ func getSaToken() (string, string, string) {
 			log.Println("token expired")
 		}
 		issuer = claims["iss"].(string)
-		kid = claims["kid"].(string)
 	} else {
 		log.Fatalf("error unmarshalling jwt claims: %v", err)
 	}
 
-	return tokenString, issuer, kid
+	return tokenString, issuer
 }
 
 func getK8sJwksData() ([]byte, string) {
-	saToken, _, kid := getSaToken()
+	saToken, _ := getSaToken()
 	authString := fmt.Sprintf("Bearer %s", saToken)
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -81,6 +79,8 @@ func getK8sJwksData() ([]byte, string) {
 		panic(err.Error())
 	}
 
+	kid := payload["kid"].(string)
+
 	jwks, err := json.Marshal(payload)
 	if err != nil {
 		panic(err.Error())
@@ -96,7 +96,7 @@ func getOidcJwksData() ([]byte, string) {
 		Timeout: 5 * time.Second,
 	}
 
-	_, issuer, kid := getSaToken()
+	_, issuer := getSaToken()
 
 	req, _ := http.NewRequest("GET", issuer+"/keys", nil)
 	resp, err := httpClient.Do(req)
@@ -109,6 +109,8 @@ func getOidcJwksData() ([]byte, string) {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	kid := payload["kid"].(string)
 
 	jwks, err := json.Marshal(payload)
 	if err != nil {

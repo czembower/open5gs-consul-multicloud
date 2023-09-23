@@ -14,7 +14,8 @@ resource "helm_release" "consul" {
   chart      = "consul"
 
   depends_on = [
-    vault_jwt_auth_backend_role.consul
+    vault_jwt_auth_backend_role.consul,
+    vault_jwt_auth_backend.this
   ]
 
   values = [<<EOT
