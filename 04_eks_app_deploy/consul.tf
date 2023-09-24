@@ -171,4 +171,29 @@ resource "helm_release" "consul" {
     name  = "global.acls.createReplicationToken"
     value = true
   }
+
+  set {
+    name  = "global.federation.enabled"
+    value = true
+  }
+
+  set {
+    name  = "global.federation.createFederationSecret"
+    value = true
+  }
+
+  set {
+    name  = "global.meshGateway.enabled"
+    value = true
+  }
+
+  set {
+    name  = "global.meshGateway.replicas"
+    value = 2
+  }
+
+  set {
+    name  = "global.connectInject.replicas"
+    value = 2
+  }
 }
