@@ -36,6 +36,6 @@ resource "helm_release" "free5gc_nrf" {
 
   set {
     name  = "nrf.podAnnotations.consul\\.hashicorp\\.com/connect-inject"
-    value = true
+    value = "true"
   }
 }
