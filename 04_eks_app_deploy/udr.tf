@@ -32,4 +32,11 @@ resource "helm_release" "free5gc_udr" {
     value = "true"
     type  = "string"
   }
+
+  set {
+    name  = "udr.podAnnotations.consul\\.hashicorp\\.com/connect-service-upstreams"
+    value = "nrf-nnrf:8000"
+  }
 }
+
+//consul.hashicorp.com/connect-service-upstreams: 'api-v1:9091'
