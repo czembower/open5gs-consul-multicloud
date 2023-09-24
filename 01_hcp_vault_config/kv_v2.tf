@@ -34,7 +34,7 @@ resource "vault_kv_secret_v2" "acl_bootstrap_token" {
   name      = "acl_bootstrap_token"
   data_json = jsonencode(
     {
-      key = "${random_uuid.acl_bootstrap_token.result}"
+      token = "${random_uuid.acl_bootstrap_token.result}"
     }
   )
 }

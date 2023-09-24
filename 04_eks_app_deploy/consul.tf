@@ -127,15 +127,15 @@ resource "helm_release" "consul" {
     value = true
   }
 
-  # set {
-  #   name  = "global.acls.bootstrapToken.secretName"
-  #   value = "kv/data/acl_bootstrap_token"
-  # }
+  set {
+    name  = "global.acls.bootstrapToken.secretName"
+    value = "kv/data/acl_bootstrap_token"
+  }
 
-  # set {
-  #   name  = "global.acls.bootstrapToken.secretKey"
-  #   value = "token"
-  # }
+  set {
+    name  = "global.acls.bootstrapToken.secretKey"
+    value = "token"
+  }
 
   set {
     name  = "global.acls.createReplicationToken"
