@@ -100,7 +100,7 @@ resource "vault_pki_secret_backend_role" "consul_connect" {
   name               = "consul-connect"
   allowed_domains    = ["svc.cluster.local", "*consul*"]
   allow_subdomains   = true
-  allow_glob_domains = false
+  allow_glob_domains = true
   allow_any_name     = false
   enforce_hostnames  = true
   allow_ip_sans      = true
