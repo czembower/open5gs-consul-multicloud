@@ -173,6 +173,16 @@ resource "helm_release" "consul" {
   }
 
   set {
+    name  = "global.acls.replicationToken.secretName"
+    value = "kv/data/replication_token"
+  }
+
+  set {
+    name  = "global.acls.replicationToken.secretKey"
+    value = "token"
+  }
+
+  set {
     name  = "global.federation.enabled"
     value = true
   }
