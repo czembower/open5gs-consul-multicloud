@@ -183,17 +183,17 @@ resource "helm_release" "consul" {
   }
 
   set {
-    name  = "global.meshGateway.enabled"
+    name  = "meshGateway.enabled"
     value = true
   }
 
   set {
-    name  = "global.meshGateway.replicas"
+    name  = "meshGateway.replicas"
     value = 2
   }
 
   set {
-    name  = "global.connectInject.replicas"
+    name  = "connectInject.replicas"
     value = 2
   }
 }
