@@ -19,8 +19,8 @@ resource "helm_release" "free5gc_nrf" {
 
   values = [<<EOT
   nrf:
-    podAnnotations: |
-      consul.hashicorp.com/connect-inject: true
+    podAnnotations:
+      - consul.hashicorp.com/connect-inject: true
   EOT
   ]
 
