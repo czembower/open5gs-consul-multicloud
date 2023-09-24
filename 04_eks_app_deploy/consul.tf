@@ -88,6 +88,26 @@ resource "helm_release" "consul" {
   }
 
   set {
+    name  = "global.secretsBackend.vault.connectInjectRole"
+    value = "consul"
+  }
+
+  set {
+    name  = "global.secretsBackend.vault.connectCA.authMethodPath"
+    value = "jwt"
+  }
+
+  set {
+    name  = "global.secretsBackend.vault.connectCA.rootPKIPath"
+    value = "consul-connect-root"
+  }
+
+  set {
+    name  = "global.secretsBackend.vault.connectCA.intermediatePKIPath"
+    value = "consul-connect-intermediate"
+  }
+
+  set {
     name  = "global.tls.enabled"
     value = true
   }
