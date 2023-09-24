@@ -189,7 +189,7 @@ resource "helm_release" "consul" {
 
   set {
     name  = "global.federation.createFederationSecret"
-    value = true
+    value = false
   }
 
   set {
