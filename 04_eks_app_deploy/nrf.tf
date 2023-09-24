@@ -17,15 +17,25 @@ resource "helm_release" "free5gc_nrf" {
     helm_release.consul
   ]
 
-  values = [<<EOT
-  nrf:
-    podAnnotations:
-      "consul.hashicorp.com/connect-inject: true"
-  EOT
-  ]
+  # values = [<<EOT
+  # nrf:
+  #   podAnnotations:
+  #     "consul.hashicorp.com/connect-inject: true"
+  # EOT
+  # ]
 
   set {
     name  = "nrf.image.tag"
     value = "latest"
+  }
+
+  set {
+    name  = "nrf.replicaCount"
+    value = 2
+  }
+
+  set {
+    name  = "nrf.podAnnotations.consul\\.hashicorp\\.com/connect-inject"
+    value = true
   }
 }
