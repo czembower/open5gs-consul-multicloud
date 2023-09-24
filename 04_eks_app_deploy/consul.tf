@@ -108,6 +108,16 @@ resource "helm_release" "consul" {
   }
 
   set {
+    name  = "global.secretsBackend.vault.connectInject.tlsCert.secretName"
+    value = "consul-connect-intermediate/issue/consul-connect"
+  }
+
+  set {
+    name  = "global.secretsBackend.vault.connectInject.caCert.secretName"
+    value = "consul-connect-root/cert/ca"
+  }
+
+  set {
     name  = "global.tls.enabled"
     value = true
   }
