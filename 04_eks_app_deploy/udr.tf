@@ -28,7 +28,7 @@ resource "helm_release" "free5gc_udr" {
   }
 
   set {
-    name  = "nrf.podAnnotations.consul\\.hashicorp\\.com/connect-inject"
+    name  = "udr.podAnnotations.consul\\.hashicorp\\.com/connect-inject"
     value = "true"
     type  = "string"
   }
