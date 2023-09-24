@@ -94,7 +94,34 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_inte
   certificate = "${vault_pki_secret_backend_root_sign_intermediate.consul_connect_intermediate.certificate}\n${tls_self_signed_cert.consul_connect_ca_cert.cert_pem}"
 }
 
-resource "vault_pki_secret_backend_role" "consul_connect" {
+resource "vault_pki_secret_backend_role" "consul_connect_root" {
+  namespace          = vault_namespace.consul.path
+  backend            = vault_mount.pki_consul_connect_root.path
+  name               = "consul-connect"
+  allowed_domains    = ["svc.cluster.local", "*consul*"]
+  allow_subdomains   = true
+  allow_glob_domains = true
+  allow_any_name     = false
+  enforce_hostnames  = true
+  allow_ip_sans      = true
+  server_flag        = true
+  client_flag        = true
+  key_usage          = ["DigitalSignature", "KeyAgreement", "KeyEncipherment"]
+  key_type           = "ec"
+  key_bits           = 256
+
+  ou           = ["consul"]
+  organization = ["HashiCorp"]
+  country      = ["US"]
+  locality     = ["San Francisco"]
+
+  max_ttl        = 86400
+  ttl            = 86400
+  no_store       = false
+  generate_lease = true
+}
+
+resource "vault_pki_secret_backend_role" "consul_connect_int" {
   namespace          = vault_namespace.consul.path
   backend            = vault_mount.pki_consul_connect_int.path
   name               = "consul-connect"

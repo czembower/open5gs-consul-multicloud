@@ -109,7 +109,7 @@ resource "helm_release" "consul" {
 
   set {
     name  = "global.secretsBackend.vault.connectInject.tlsCert.secretName"
-    value = "consul-connect-intermediate/issue/consul-connect"
+    value = "consul-connect-root/issue/consul-connect"
   }
 
   set {
