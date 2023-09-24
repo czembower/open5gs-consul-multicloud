@@ -77,10 +77,10 @@ resource "helm_release" "consul" {
     value = "consul"
   }
 
-  set {
-    name  = "global.secretsBackend.vault.manageSystemACLsRole"
-    value = "consul"
-  }
+  # set {
+  #   name  = "global.secretsBackend.vault.manageSystemACLsRole"
+  #   value = "consul"
+  # }
 
   set {
     name  = "global.secretsBackend.vault.consulCARole"
@@ -154,33 +154,33 @@ resource "helm_release" "consul" {
 
   set {
     name  = "global.acls.manageSystemACLs"
-    value = true
+    value = false
   }
 
-  set {
-    name  = "global.acls.bootstrapToken.secretName"
-    value = "kv/data/acl_bootstrap_token"
-  }
+  # set {
+  #   name  = "global.acls.bootstrapToken.secretName"
+  #   value = "kv/data/acl_bootstrap_token"
+  # }
 
-  set {
-    name  = "global.acls.bootstrapToken.secretKey"
-    value = "token"
-  }
+  # set {
+  #   name  = "global.acls.bootstrapToken.secretKey"
+  #   value = "token"
+  # }
 
-  set {
-    name  = "global.acls.createReplicationToken"
-    value = true
-  }
+  # set {
+  #   name  = "global.acls.createReplicationToken"
+  #   value = true
+  # }
 
-  set {
-    name  = "global.acls.replicationToken.secretName"
-    value = "kv/data/replication_token"
-  }
+  # set {
+  #   name  = "global.acls.replicationToken.secretName"
+  #   value = "kv/data/replication_token"
+  # }
 
-  set {
-    name  = "global.acls.replicationToken.secretKey"
-    value = "token"
-  }
+  # set {
+  #   name  = "global.acls.replicationToken.secretKey"
+  #   value = "token"
+  # }
 
   set {
     name  = "global.federation.enabled"

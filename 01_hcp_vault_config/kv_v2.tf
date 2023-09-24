@@ -15,7 +15,7 @@ resource "random_id" "gossip_key" {
   byte_length = 32
 }
 
-resource "random_uuid" "acl_bootstrap_token" {}
+# resource "random_uuid" "acl_bootstrap_token" {}
 
 resource "vault_kv_secret_v2" "gossip_key" {
   namespace = vault_namespace.consul.path
@@ -28,13 +28,13 @@ resource "vault_kv_secret_v2" "gossip_key" {
   )
 }
 
-resource "vault_kv_secret_v2" "acl_bootstrap_token" {
-  namespace = vault_namespace.consul.path
-  mount     = vault_mount.kvv2.path
-  name      = "acl_bootstrap_token"
-  data_json = jsonencode(
-    {
-      token = "${random_uuid.acl_bootstrap_token.result}"
-    }
-  )
-}
+# resource "vault_kv_secret_v2" "acl_bootstrap_token" {
+#   namespace = vault_namespace.consul.path
+#   mount     = vault_mount.kvv2.path
+#   name      = "acl_bootstrap_token"
+#   data_json = jsonencode(
+#     {
+#       token = "${random_uuid.acl_bootstrap_token.result}"
+#     }
+#   )
+# }
