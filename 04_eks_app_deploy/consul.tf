@@ -14,6 +14,7 @@ resource "helm_release" "consul" {
   chart      = "consul"
 
   depends_on = [
+    helm_release.vault,
     vault_jwt_auth_backend_role.consul,
     vault_jwt_auth_backend.this
   ]
@@ -104,5 +105,30 @@ resource "helm_release" "consul" {
   set {
     name  = "server.serverCert.secretName"
     value = "consul-intermediate/issue/consul"
+  }
+
+  set {
+    name  = "global.gossipEncryption.autoGenerate"
+    value = false
+  }
+
+  set {
+    name  = "global.gossipEncryption.secretName"
+    value = "kv/data/gossip_key"
+  }
+
+  set {
+    name  = "global.gossipEncryption.secretKey"
+    value = "key"
+  }
+
+  set {
+    name  = "global.acls.manageSystemACLs"
+    value = true
+  }
+
+  set {
+    name  = "global.acls.createReplicationToken"
+    value = true
   }
 }

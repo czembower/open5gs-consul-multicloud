@@ -13,6 +13,10 @@ resource "helm_release" "free5gc_nrf" {
   repository = "https://raw.githubusercontent.com/Orange-OpenSource/towards5gs-helm/main/repo/"
   chart      = "free5gc-nrf"
 
+  depends_on = [
+    helm_release.consul
+  ]
+
   set {
     name  = "nrf.image.tag"
     value = "latest"

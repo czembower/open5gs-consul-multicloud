@@ -13,6 +13,10 @@ resource "helm_release" "free5gc_udr" {
   repository = "https://raw.githubusercontent.com/Orange-OpenSource/towards5gs-helm/main/repo/"
   chart      = "free5gc-udr"
 
+  depends_on = [
+    helm_release.consul
+  ]
+
   set {
     name  = "udr.image.tag"
     value = "latest"
