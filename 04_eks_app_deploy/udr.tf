@@ -12,6 +12,7 @@ resource "helm_release" "free5gc_udr" {
   namespace  = kubernetes_namespace.free5gc_udr.metadata[0].name
   repository = "https://raw.githubusercontent.com/Orange-OpenSource/towards5gs-helm/main/repo/"
   chart      = "free5gc-udr"
+  wait       = false
 
   depends_on = [
     helm_release.consul,
@@ -37,6 +38,35 @@ resource "helm_release" "free5gc_udr" {
     name  = "udr.podAnnotations.consul\\.hashicorp\\.com/connect-inject"
     value = "true"
     type  = "string"
+  }
+}
+
+resource "null_resource" "k8s_patcher" {
+  triggers = {
+    endpoint = data.aws_eks_cluster.this.endpoint
+    ca_crt   = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+    token    = data.aws_eks_cluster_auth.this.token
+    release  = helm_release.free5gc_udr.metadata[0].values
+  }
+
+  depends_on = [
+    helm_release.free5gc_udr
+  ]
+
+  provisioner "local-exec" {
+    command = <<EOH
+cat >/tmp/ca.crt <<EOF
+${base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)}
+EOF
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x ./kubectl && \
+./kubectl \
+  --server="${aws_eks_cluster.main.endpoint}" \
+  --certificate_authority=/tmp/ca.crt \
+  --token="${data.aws_eks_cluster_auth.cluster.token}" \
+  patch deployment udr-free5gc-udr-udr \
+  -n free5gc-udr \
+  --patch '{"spec": {"template": {"spec": {"initContainers": null }}}}'
+EOH
   }
 }
 
