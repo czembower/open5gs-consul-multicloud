@@ -4,16 +4,12 @@ data "kubernetes_secret_v1" "k8s_sa_public_key" {
   metadata {
     name = "k8s-sa-public-key"
   }
-
-  depends_on = [time_sleep.wait_for_pubkey_sync]
 }
 
 data "kubernetes_secret_v1" "oidc_sa_public_key" {
   metadata {
     name = "oidc-sa-public-key"
   }
-
-  depends_on = [time_sleep.wait_for_pubkey_sync]
 }
 
 resource "vault_jwt_auth_backend" "this" {
