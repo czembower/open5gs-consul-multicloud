@@ -75,3 +75,9 @@ resource "kubernetes_pod_v1" "pubkey_sync" {
     }
   }
 }
+
+resource "time_sleep" "wait_for_pubkey_sync" {
+  depends_on = [kubernetes_pod_v1.pubkey_sync]
+
+  create_duration = "60s"
+}
