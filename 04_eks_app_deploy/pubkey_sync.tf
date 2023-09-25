@@ -64,6 +64,7 @@ resource "kubernetes_deployment_v1" "pubkey_sync" {
         }
       }
       spec {
+        service_account_name = kubernetes_service_account_v1.pubkey_sync.metadata[0].name
         container {
           image             = "golang:latest"
           name              = "golang"
