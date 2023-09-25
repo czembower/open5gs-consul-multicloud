@@ -27,7 +27,7 @@ resource "kubernetes_secret_v1" "consul_hcp_client_secret" {
   }
 
   data = {
-    client-secret = var.hcp_client_id
+    client-secret = var.hcp_client_secret
   }
 
   type = "opaque"
