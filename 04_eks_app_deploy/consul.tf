@@ -14,7 +14,7 @@ resource "kubernetes_secret_v1" "consul_hcp_client_id" {
   }
 
   data = {
-    id = var.hcp_client_id
+    client-id = var.hcp_client_id
   }
 
   type = "opaque"
@@ -40,7 +40,7 @@ resource "kubernetes_secret_v1" "consul_hcp_resource_id" {
   }
 
   data = {
-    client-secret = var.consul_hcp_resource_id
+    resource-id = var.consul_hcp_resource_id
   }
 
   type = "opaque"
@@ -71,13 +71,13 @@ resource "helm_release" "consul" {
     cloud:
       enabled: true
       resourceId:
-        secretName: "consul-hcp-resource-id"
+        secretName: ${kubernetes_secret_v1.consul_hcp_resource_id.data[0].name}
         secretKey: "resource-id"
       clientId:
-        secretName: "consul-hcp-client-id"
+        secretName: ${kubernetes_secret_v1.consul_hcp_client_id.data[0].name}
         secretKey: "client-id"
       clientSecret:
-        secretName: "consul-hcp-client-secret"
+        secretName: ${kubernetes_secret_v1.consul_hcp_client_secret.data[0].name}
         secretKey: "client-secret"
   EOT
   ]
