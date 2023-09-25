@@ -49,6 +49,16 @@ variable "hcp_project_id" {
   default = null
 }
 
+variable "hcp_consul_smc_client_id" {
+  type    = string
+  default = null
+}
+
+variable "hcp_consul_smc_client_secret" {
+  type    = string
+  default = null
+}
+
 variable "aws_hvn_cidr" {
   type    = string
   default = "172.25.16.0/20"

@@ -91,7 +91,7 @@ resource "tfe_workspace" "eks_app_deploy" {
 
 resource "tfe_variable" "hcp_client_id" {
   key          = "hcp_client_id"
-  value        = var.hcp_client_id
+  value        = var.hcp_consul_smc_client_id
   category     = "terraform"
   hcl          = false
   sensitive    = true
@@ -100,7 +100,7 @@ resource "tfe_variable" "hcp_client_id" {
 
 resource "tfe_variable" "hcp_client_secret" {
   key          = "hcp_client_secret"
-  value        = var.hcp_client_secret
+  value        = var.hcp_consul_smc_client_secret
   category     = "terraform"
   hcl          = false
   sensitive    = true
