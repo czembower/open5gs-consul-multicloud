@@ -88,3 +88,30 @@ resource "tfe_workspace" "eks_app_deploy" {
     oauth_token_id = data.tfe_oauth_client.client.oauth_token_id
   }
 }
+
+resource "tfe_variable" "hcp_client_id" {
+  key          = "hcp_client_id"
+  value        = var.hcp_client_id
+  category     = "terraform"
+  hcl          = false
+  sensitive    = true
+  workspace_id = tfe_workspace.eks_app_deploy.id
+}
+
+resource "tfe_variable" "hcp_client_secret" {
+  key          = "hcp_client_secret"
+  value        = var.hcp_client_secret
+  category     = "terraform"
+  hcl          = false
+  sensitive    = true
+  workspace_id = tfe_workspace.eks_app_deploy.id
+}
+
+resource "tfe_variable" "consul_hcp_resource_id" {
+  key          = "consul_hcp_resource_id"
+  value        = "organization/${hcp_hvn.aws.organization_id}/project/${hcp_hvn.aws.project_id}/hashicorp.consul.global-network-manager.cluster/${var.aws_region}"
+  category     = "terraform"
+  hcl          = false
+  sensitive    = true
+  workspace_id = tfe_workspace.eks_app_deploy.id
+}

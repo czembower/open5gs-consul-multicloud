@@ -16,6 +16,21 @@ variable "TFC_CONFIGURATION_VERSION_GIT_BRANCH" {
   type = string
 }
 
+variable "hcp_client_id" {
+  type    = string
+  default = null
+}
+
+variable "hcp_client_secret" {
+  type    = string
+  default = null
+}
+
+variable "consul_hcp_resource_id" {
+  type    = string
+  default = null
+}
+
 locals {
   tfc_org       = split("/", var.TFC_WORKSPACE_SLUG)[0]
   tfc_workspace = split("/", var.TFC_WORKSPACE_SLUG)[1]

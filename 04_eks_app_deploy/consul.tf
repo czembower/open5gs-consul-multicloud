@@ -7,6 +7,45 @@ resource "kubernetes_namespace" "consul" {
   }
 }
 
+resource "kubernetes_secret_v1" "consul_hcp_client_id" {
+  metadata {
+    name      = "consul-hcp-client-id"
+    namespace = kubernetes_namespace.consul.metadata[0].name
+  }
+
+  data = {
+    id = var.hcp_client_id
+  }
+
+  type = "opaque"
+}
+
+resource "kubernetes_secret_v1" "consul_hcp_client_secret" {
+  metadata {
+    name      = "consul-hcp-client-secret"
+    namespace = kubernetes_namespace.consul.metadata[0].name
+  }
+
+  data = {
+    client-secret = var.hcp_client_id
+  }
+
+  type = "opaque"
+}
+
+resource "kubernetes_secret_v1" "consul_hcp_resource_id" {
+  metadata {
+    name      = "consul-hcp-resource-id"
+    namespace = kubernetes_namespace.consul.metadata[0].name
+  }
+
+  data = {
+    client-secret = var.consul_hcp_resource_id
+  }
+
+  type = "opaque"
+}
+
 resource "helm_release" "consul" {
   name       = "consul"
   namespace  = kubernetes_namespace.consul.metadata[0].name
@@ -29,6 +68,17 @@ resource "helm_release" "consul" {
           vault.hashicorp.com/auth-type: "jwt"
           vault.hashicorp.com/auth-path: "auth/jwt"
           vault.hashicorp.com/log-level: "debug"
+    cloud:
+      enabled: true
+      resourceId:
+        secretName: "consul-hcp-resource-id"
+        secretKey: "resource-id"
+      clientId:
+        secretName: "consul-hcp-client-id"
+        secretKey: "client-id"
+      clientSecret:
+        secretName: "consul-hcp-client-secret"
+        secretKey: "client-secret"
   EOT
   ]
 
