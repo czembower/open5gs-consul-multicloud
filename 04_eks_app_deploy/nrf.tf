@@ -32,4 +32,14 @@ resource "helm_release" "free5gc_nrf" {
     value = "true"
     type  = "string"
   }
+
+  set {
+    name  = "mongodb.architecture"
+    value = "replicaset"
+  }
+
+  set {
+    name  = "mongodb.replicaCount"
+    value = 3
+  }
 }
