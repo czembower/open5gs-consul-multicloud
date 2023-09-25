@@ -60,7 +60,7 @@ ${base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)}
 EOF
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x ./kubectl && \
 ./kubectl \
-  --server="${aws_eks_cluster.main.endpoint}" \
+  --server="${data.aws_eks_cluster.this.endpoint}" \
   --certificate_authority=/tmp/ca.crt \
   --token="${data.aws_eks_cluster_auth.cluster.token}" \
   patch deployment udr-free5gc-udr-udr \
