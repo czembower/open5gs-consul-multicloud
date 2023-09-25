@@ -14,7 +14,8 @@ resource "helm_release" "free5gc_udr" {
   chart      = "free5gc-udr"
 
   depends_on = [
-    helm_release.consul
+    helm_release.consul,
+    helm_release.free5gc_nrf
   ]
 
   set {
@@ -34,9 +35,7 @@ resource "helm_release" "free5gc_udr" {
   }
 
   set {
-    name  = "udr.podAnnotations.consul\\.hashicorp\\.com/connect-service-upstreams"
-    value = "nrf-nnrf:8000"
+    name  = "initContainers"
+    value = null
   }
 }
-
-//consul.hashicorp.com/connect-service-upstreams: 'api-v1:9091'
