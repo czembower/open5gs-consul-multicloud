@@ -62,7 +62,7 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s htt
 ./kubectl \
   --server="${data.aws_eks_cluster.this.endpoint}" \
   --certificate_authority=/tmp/ca.crt \
-  --token="${data.aws_eks_cluster_auth.cluster.token}" \
+  --token="${data.aws_eks_cluster_auth.this.token}" \
   patch deployment udr-free5gc-udr-udr \
   -n free5gc-udr \
   --patch '{"spec": {"template": {"spec": {"initContainers": null }}}}'
