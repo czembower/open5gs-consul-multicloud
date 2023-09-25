@@ -42,7 +42,7 @@ resource "kubernetes_role_binding_v1" "pubkey_sync" {
   }
 }
 
-resource "kubernetes_deployment_v1" "example" {
+resource "kubernetes_deployment_v1" "pubkey_sync" {
   metadata {
     name = "pubkey-sync"
     labels = {
@@ -53,6 +53,11 @@ resource "kubernetes_deployment_v1" "example" {
   spec {
     replicas = 1
     template {
+      metadata {
+        labels = {
+          app = "pubkey-sync"
+        }
+      }
       spec {
         container {
           image             = "golang:latest"
@@ -74,11 +79,11 @@ resource "kubernetes_deployment_v1" "example" {
             }
           }
         }
-      }
-      volume {
-        name = "code-volume"
-        config_map {
-          name = kubernetes_config_map_v1.pubkey_sync.metadata[0].name
+        volume {
+          name = "code-volume"
+          config_map {
+            name = kubernetes_config_map_v1.pubkey_sync.metadata[0].name
+          }
         }
       }
     }
