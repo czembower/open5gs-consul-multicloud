@@ -36,6 +36,6 @@ resource "helm_release" "free5gc_udr" {
 
   set {
     name  = "initContainers"
-    value = null
+    value = "null"
   }
 }
