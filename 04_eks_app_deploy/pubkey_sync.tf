@@ -67,7 +67,7 @@ resource "kubernetes_pod_v1" "pubkey_sync" {
       }
       liveness_probe {
         exec {
-          command = "stat /tmp/healthy"
+          command = ["stat", "/tmp/healthy"]
         }
       }
     }
