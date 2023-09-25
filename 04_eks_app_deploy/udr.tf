@@ -24,6 +24,11 @@ resource "helm_release" "free5gc_udr" {
   }
 
   set {
+    name  = "udr.replicaCount"
+    value = 2
+  }
+
+  set {
     name  = "global.nrf.service.name"
     value = "nrf-nnrf.${kubernetes_namespace.free5gc_nrf.metadata[0].name}.svc.cluster.local"
   }
@@ -33,9 +38,6 @@ resource "helm_release" "free5gc_udr" {
     value = "true"
     type  = "string"
   }
-
-  set {
-    name  = "initContainers"
-    value = "null"
-  }
 }
+
+// kubectl patch deployment -n free5gc-udr udr-free5gc-udr-udr --patch '{"spec": {"template": {"spec": {"initContainers": null }}}}'
