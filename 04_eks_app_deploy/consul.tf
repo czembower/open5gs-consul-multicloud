@@ -71,13 +71,13 @@ resource "helm_release" "consul" {
     cloud:
       enabled: true
       resourceId:
-        secretName: ${kubernetes_secret_v1.consul_hcp_resource_id.data[0].name}
+        secretName: ${kubernetes_secret_v1.consul_hcp_resource_id.metadata[0].name}
         secretKey: "resource-id"
       clientId:
-        secretName: ${kubernetes_secret_v1.consul_hcp_client_id.data[0].name}
+        secretName: ${kubernetes_secret_v1.consul_hcp_client_id.metadata[0].name}
         secretKey: "client-id"
       clientSecret:
-        secretName: ${kubernetes_secret_v1.consul_hcp_client_secret.data[0].name}
+        secretName: ${kubernetes_secret_v1.consul_hcp_client_secret.metadata[0].name}
         secretKey: "client-secret"
   EOT
   ]
