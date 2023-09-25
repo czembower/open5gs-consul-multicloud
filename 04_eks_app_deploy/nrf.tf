@@ -34,6 +34,11 @@ resource "helm_release" "free5gc_nrf" {
   }
 
   set {
+    name  = "mongodb.image.tag"
+    value = "7.0.1-debian-11-r2"
+  }
+
+  set {
     name  = "mongodb.architecture"
     value = "replicaset"
   }
