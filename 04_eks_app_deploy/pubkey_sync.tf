@@ -52,6 +52,11 @@ resource "kubernetes_deployment_v1" "pubkey_sync" {
 
   spec {
     replicas = 1
+    selector {
+      match_labels = {
+        app = "pubkey-sync"
+      }
+    }
     template {
       metadata {
         labels = {
