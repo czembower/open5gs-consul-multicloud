@@ -66,6 +66,10 @@ resource "kubernetes_pod_v1" "pubkey_sync" {
         mount_path = "/code"
       }
       liveness_probe {
+        initial_delay_seconds = 30
+        period_seconds        = 10
+        failure_threshold     = 10
+        success_threshold     = 1
         exec {
           command = ["stat", "/tmp/healthy"]
         }
