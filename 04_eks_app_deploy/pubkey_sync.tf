@@ -65,6 +65,11 @@ resource "kubernetes_pod_v1" "pubkey_sync" {
         name       = "code-volume"
         mount_path = "/code"
       }
+      liveness_probe {
+        exec {
+          command = "stat /tmp/healthy"
+        }
+      }
     }
 
     volume {

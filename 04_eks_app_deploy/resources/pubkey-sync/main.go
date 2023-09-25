@@ -185,6 +185,7 @@ func main() {
 
 		createK8sSecret("k8s", k8sSaPem)
 		createK8sSecret("oidc", oidcSaPem)
+		os.Create("/tmp/healthy")
 		time.Sleep(60 * time.Second)
 	}
 }
