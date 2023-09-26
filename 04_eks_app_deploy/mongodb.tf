@@ -29,7 +29,7 @@ apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
   name: mongodb
-  namespace: ${kubernetes_namespace.mongodb.metadata[0].name}
+  namespace: mongodb
 spec:
   members: 3
   type: ReplicaSet
@@ -63,4 +63,8 @@ stringData:
   password: <your-password-here>
 YAML
   )
+
+  depends_on = [
+    helm_release.mongodb_operator
+  ]
 }
