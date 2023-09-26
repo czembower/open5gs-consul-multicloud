@@ -7,11 +7,11 @@ resource "kubernetes_namespace" "mongodb" {
   }
 }
 
-resource "helm_release" "mongodb" {
-  name       = "mongodb"
+resource "helm_release" "mongodb_operator" {
+  name       = "mongodb-operator"
   namespace  = kubernetes_namespace.mongodb.metadata[0].name
   repository = "https://mongodb.github.io/helm-charts"
-  chart      = "mongodb/community-operator"
+  chart      = "community-operator"
 
   depends_on = [
     helm_release.consul
