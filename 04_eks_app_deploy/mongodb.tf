@@ -64,9 +64,14 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: my-user-password
+  namespace: mongodb
 type: Opaque
 stringData:
   password: <your-password-here>
 YAML
   )
+
+  depends_on = [
+    helm_release.mongodb_operator
+  ]
 }
