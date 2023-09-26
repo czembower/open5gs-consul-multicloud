@@ -16,11 +16,9 @@ resource "helm_release" "mongodb_operator" {
   depends_on = [
     helm_release.consul
   ]
-
-
-
 }
 
+//consul.hashicorp.com/connect-inject: true
 
 resource "kubernetes_manifest" "mongodb" {
   manifest = yamldecode(<<YAML
@@ -33,11 +31,21 @@ spec:
   members: 3
   type: ReplicaSet
   statefulSet:
+    metadata:
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"
+      labels:
+        statefulSetLabelTest: testValue
     spec:
+      selector:
+        matchLabels:
+          podTemplateLabelTest: testValue
       template:
         metadata:
           annotations:
-            consul.hashicorp.com/connect-inject: true
+            consul.hashicorp.com/connect-inject: "true"
+          labels:
+            podTemplateLabelTest: testValue
   version: "6.0.5"
   security:
     authentication:
