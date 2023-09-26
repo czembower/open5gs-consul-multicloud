@@ -44,6 +44,7 @@ spec:
         metadata:
           annotations:
             consul.hashicorp.com/connect-inject: "true"
+            consul.hashicorp.com/transparent-proxy-exclude-outbound-cidrs: "172.20.0.1/20"
           labels:
             podTemplateLabelTest: testValue
   version: "6.0.5"
