@@ -59,6 +59,8 @@ YAML
 }
 
 resource "kubernetes_manifest" "mongodb_user_secret" {
+  computed_fields = ["stringData"]
+
   manifest = yamldecode(<<YAML
 apiVersion: v1
 kind: Secret
