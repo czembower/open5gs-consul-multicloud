@@ -24,7 +24,6 @@ resource "helm_release" "mongodb_operator" {
 
 resource "kubernetes_manifest" "mongodb" {
   manifest = yamldecode(<<YAML
----
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
@@ -40,7 +39,7 @@ spec:
   users:
     - name: my-user
       db: admin
-      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+      passwordSecretRef:
         name: my-user-password
       roles:
         - name: clusterAdmin
@@ -50,17 +49,6 @@ spec:
       scramCredentialsSecretName: my-scram
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib
-
-# the user credentials will be generated from this secret
-# once the credentials are generated, this secret is no longer required
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: my-user-password
-type: Opaque
-stringData:
-  password: <your-password-here>
 YAML
   )
 
@@ -68,3 +56,16 @@ YAML
     helm_release.mongodb_operator
   ]
 }
+
+
+
+# the user credentials will be generated from this secret
+# once the credentials are generated, this secret is no longer required
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: my-user-password
+# type: Opaque
+# stringData:
+#   password: <your-password-here>
