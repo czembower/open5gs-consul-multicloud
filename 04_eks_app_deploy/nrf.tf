@@ -14,7 +14,8 @@ resource "helm_release" "free5gc_nrf" {
   chart      = "free5gc-nrf"
 
   depends_on = [
-    helm_release.consul
+    helm_release.consul,
+    kubernetes_manifest.mongodb
   ]
 
   set {

@@ -53,19 +53,20 @@ YAML
   )
 
   depends_on = [
-    helm_release.mongodb_operator
+    helm_release.mongodb_operator,
+    kubernetes_manifest.mongodb_user_secret
   ]
 }
 
-
-
-# the user credentials will be generated from this secret
-# once the credentials are generated, this secret is no longer required
-# ---
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: my-user-password
-# type: Opaque
-# stringData:
-#   password: <your-password-here>
+resource "kubernetes_manifest" "mongodb_user_secret" {
+  manifest = yamldecode(<<YAML
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-user-password
+type: Opaque
+stringData:
+  password: <your-password-here>
+YAML
+  )
+}
