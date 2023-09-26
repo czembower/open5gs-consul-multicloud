@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "mongodb" {
   }
 }
 
-resource "helm_release" "free5gc_nrf" {
+resource "helm_release" "mongodb" {
   name       = "mongodb"
   namespace  = kubernetes_namespace.mongodb.metadata[0].name
   repository = "https://mongodb.github.io/helm-charts"
