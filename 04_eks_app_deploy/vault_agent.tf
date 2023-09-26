@@ -42,6 +42,46 @@ resource "helm_release" "vault" {
     name  = "global.externalVaultAddr"
     value = data.terraform_remote_state.base.outputs.hcp_vault_aws.vault_public_endpoint_url
   }
+
+  set {
+    name  = "injector.agentDefaults.cpuRequest"
+    value = "8m"
+  }
+
+  set {
+    name  = "injector.agentDefaults.cpuLimit"
+    value = "32m"
+  }
+
+  set {
+    name  = "injector.agentDefaults.memRequest"
+    value = "32Mi"
+  }
+
+  set {
+    name  = "injector.agentDefaults.memLimit"
+    value = "64Mi"
+  }
+
+  set {
+    name  = "injector.resources.requests.cpu"
+    value = "100m"
+  }
+
+  set {
+    name  = "injector.resources.requests.mem"
+    value = "128Mi"
+  }
+
+  set {
+    name  = "injector.resources.limits.cpu"
+    value = "250m"
+  }
+
+  set {
+    name  = "injector.resources.limits.mem"
+    value = "256Mi"
+  }
 }
 
 # resource "helm_release" "vault_secrets_operator" {
