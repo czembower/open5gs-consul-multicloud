@@ -52,6 +52,10 @@ spec:
 YAML
   )
 
+  wait {
+    rollout = true
+  }
+
   depends_on = [
     helm_release.mongodb_operator,
     kubernetes_manifest.mongodb_user_secret
