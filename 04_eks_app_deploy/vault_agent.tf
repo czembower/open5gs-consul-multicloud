@@ -74,7 +74,7 @@ resource "helm_release" "vault" {
   }
 
   set {
-    name  = "injector.resources.requests.mem"
+    name  = "injector.resources.requests.memory"
     value = "128Mi"
   }
 
@@ -84,7 +84,7 @@ resource "helm_release" "vault" {
   }
 
   set {
-    name  = "injector.resources.limits.mem"
+    name  = "injector.resources.limits.memory"
     value = "256Mi"
   }
 }
