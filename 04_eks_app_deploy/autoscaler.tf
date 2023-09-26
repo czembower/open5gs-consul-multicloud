@@ -5,4 +5,8 @@ resource "helm_release" "vpa" {
   namespace  = "kube-system"
   repository = "https://cowboysysop.github.io/charts/"
   chart      = "cowboysysop/vertical-pod-autoscaler"
+
+  depends_on = [
+    helm_release.metrics_server
+  ]
 }
