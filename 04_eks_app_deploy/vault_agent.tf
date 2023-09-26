@@ -44,6 +44,11 @@ resource "helm_release" "vault" {
   }
 
   set {
+    name  = "injector.metrics.enabled"
+    value = true
+  }
+
+  set {
     name  = "injector.agentDefaults.cpuRequest"
     value = "8m"
   }
