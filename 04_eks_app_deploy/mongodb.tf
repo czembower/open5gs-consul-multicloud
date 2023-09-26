@@ -32,6 +32,12 @@ metadata:
 spec:
   members: 3
   type: ReplicaSet
+  statefulSet:
+    spec:
+      template:
+        spec:
+          annotations:
+            consul.hashicorp.com/connect-inject: true
   version: "6.0.5"
   security:
     authentication:
