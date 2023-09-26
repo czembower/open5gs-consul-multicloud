@@ -35,7 +35,7 @@ spec:
   statefulSet:
     spec:
       template:
-        spec:
+        metadata:
           annotations:
             consul.hashicorp.com/connect-inject: true
   version: "6.0.5"
