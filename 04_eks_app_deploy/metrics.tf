@@ -1,5 +1,14 @@
 // metrics-server https://kubernetes-sigs.github.io/metrics-server/
 
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    annotations = {
+      name = "monitoring"
+    }
+    name = "monitoring"
+  }
+}
+
 resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   namespace  = "kube-system"
@@ -9,7 +18,7 @@ resource "helm_release" "metrics_server" {
 
 resource "helm_release" "prometheus" {
   name       = "prometheus-stack"
-  namespace  = "monitoring"
+  namespace  = kubernetes_namespace.monitoring.metadata[0].name
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
 }
