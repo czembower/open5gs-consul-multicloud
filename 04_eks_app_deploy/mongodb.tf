@@ -26,7 +26,7 @@ apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
   name: mongodb
-  namespace: mongodb
+  namespace: ${kubernetes_namespace.mongodb.metadata[0].name}
 spec:
   members: 3
   type: ReplicaSet
