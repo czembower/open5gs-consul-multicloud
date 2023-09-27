@@ -35,11 +35,12 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: "true"
       labels:
-        statefulSetLabelTest: testValue
+        app: mongodb
     spec:
+      serviceName: mongodb
       selector:
         matchLabels:
-          podTemplateLabelTest: testValue
+          app: mongodb
       template:
         spec:
           containers:
@@ -54,7 +55,7 @@ spec:
             consul.hashicorp.com/connect-inject: "true"
             consul.hashicorp.com/transparent-proxy-exclude-outbound-cidrs: "172.20.0.1/20"
           labels:
-            podTemplateLabelTest: testValue
+            app: mongodb
   version: "6.0.5"
   security:
     authentication:
