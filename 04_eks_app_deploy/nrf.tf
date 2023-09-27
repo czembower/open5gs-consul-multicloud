@@ -17,6 +17,13 @@ resource "helm_release" "free5gc_nrf" {
     helm_release.consul
   ]
 
+  values = [<<EOT
+  nrf:
+    configuration:
+      MongoDBUrl: mongodb://my-user:<your-password-here>@mongodb.mongodb:27017
+  EOT
+  ]
+
   set {
     name  = "db.enabled"
     value = false

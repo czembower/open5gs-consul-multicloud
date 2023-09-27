@@ -51,7 +51,7 @@ resource "helm_release" "mongodb_operator" {
 #         metadata:
 #           annotations:
 #             consul.hashicorp.com/connect-inject: "true"
-#             consul.hashicorp.com/transparent-proxy-exclude-outbound-cidrs: "172.20.0.1/20"
+#             consul.hashicorp.com/transparent-proxy-exclude-outbound-cidrs: "172.20.0.0/20"
 #           labels:
 #             app: mongodb
 #   version: "6.0.5"
