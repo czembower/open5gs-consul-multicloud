@@ -24,6 +24,11 @@ resource "helm_release" "free5gc_nrf" {
   }
 
   set {
+    name  = "mongodb.fullnameOverride"
+    value = "mongodb-svc.mongodb"
+  }
+
+  set {
     name  = "nrf.image.tag"
     value = "latest"
   }
