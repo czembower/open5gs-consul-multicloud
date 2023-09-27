@@ -23,8 +23,8 @@ resource "helm_release" "free5gc_nrf" {
   }
 
   set {
-    name  = "mongodb.fullnameOverride"
-    value = "mongodb-svc.mongodb"
+    name  = "mongodb.service.name"
+    value = "mongodb.mongodb"
   }
 
   set {
