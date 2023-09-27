@@ -18,67 +18,67 @@ resource "helm_release" "mongodb_operator" {
   ]
 }
 
-resource "kubernetes_manifest" "mongodb" {
-  manifest = yamldecode(<<YAML
-apiVersion: mongodbcommunity.mongodb.com/v1
-kind: MongoDBCommunity
-metadata:
-  name: mongodb
-  namespace: ${kubernetes_namespace.mongodb.metadata[0].name}
-spec:
-  members: 3
-  type: ReplicaSet
-  statefulSet:
-    metadata:
-      annotations:
-        consul.hashicorp.com/connect-inject: "true"
-      labels:
-        app: mongodb
-    spec:
-      serviceName: mongodb
-      selector:
-        matchLabels:
-          app: mongodb
-      template:
-        spec:
-          containers:
-            - name: mongodb-agent
-              readinessProbe:
-                exec:
-                  command:
-                    - curl
-                    - http://localhost:27017
-        metadata:
-          annotations:
-            consul.hashicorp.com/connect-inject: "true"
-            consul.hashicorp.com/transparent-proxy-exclude-outbound-cidrs: "172.20.0.1/20"
-          labels:
-            app: mongodb
-  version: "6.0.5"
-  security:
-    authentication:
-      modes: ["SCRAM"]
-  users:
-    - name: my-user
-      db: admin
-      passwordSecretRef:
-        name: my-user-password
-      roles:
-        - name: clusterAdmin
-          db: admin
-        - name: userAdminAnyDatabase
-          db: admin
-      scramCredentialsSecretName: my-scram
-  additionalMongodConfig:
-    storage.wiredTiger.engineConfig.journalCompressor: zlib
-YAML
-  )
+# resource "kubernetes_manifest" "mongodb" {
+#   manifest = yamldecode(<<YAML
+# apiVersion: mongodbcommunity.mongodb.com/v1
+# kind: MongoDBCommunity
+# metadata:
+#   name: mongodb
+#   namespace: ${kubernetes_namespace.mongodb.metadata[0].name}
+# spec:
+#   members: 3
+#   type: ReplicaSet
+#   statefulSet:
+#     metadata:
+#       annotations:
+#         consul.hashicorp.com/connect-inject: "true"
+#       labels:
+#         app: mongodb
+#     spec:
+#       serviceName: mongodb
+#       selector:
+#         matchLabels:
+#           app: mongodb
+#       template:
+#         spec:
+#           containers:
+#             - name: mongodb-agent
+#               readinessProbe:
+#                 exec:
+#                   command:
+#                     - curl
+#                     - http://localhost:27017
+#         metadata:
+#           annotations:
+#             consul.hashicorp.com/connect-inject: "true"
+#             consul.hashicorp.com/transparent-proxy-exclude-outbound-cidrs: "172.20.0.1/20"
+#           labels:
+#             app: mongodb
+#   version: "6.0.5"
+#   security:
+#     authentication:
+#       modes: ["SCRAM"]
+#   users:
+#     - name: my-user
+#       db: admin
+#       passwordSecretRef:
+#         name: my-user-password
+#       roles:
+#         - name: clusterAdmin
+#           db: admin
+#         - name: userAdminAnyDatabase
+#           db: admin
+#       scramCredentialsSecretName: my-scram
+#   additionalMongodConfig:
+#     storage.wiredTiger.engineConfig.journalCompressor: zlib
+# YAML
+#   )
 
-  depends_on = [
-    helm_release.mongodb_operator,
-    kubernetes_manifest.mongodb_user_secret
-  ]
-}
+#   depends_on = [
+#     helm_release.mongodb_operator,
+#     kubernetes_manifest.mongodb_user_secret
+#   ]
+# }
 
 resource "kubernetes_manifest" "mongodb_user_secret" {
   computed_fields = ["stringData"]
