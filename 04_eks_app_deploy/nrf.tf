@@ -21,7 +21,7 @@ resource "helm_release" "free5gc_nrf" {
   nrf:
     configuration:
       configuration: |-
-        MongoDBUrl: mongodb://my-user:<your-password-here>@mongodb.mongodb:27017
+        MongoDBUrl: "mongodb://my-user:<your-password-here>@mongodb.mongodb:27017"
   EOT
   ]
 
