@@ -41,6 +41,14 @@ spec:
         matchLabels:
           podTemplateLabelTest: testValue
       template:
+        spec:
+          containers:
+            - name: mongodb-agent
+              readinessProbe:
+                exec:
+                  command:
+                    - curl
+                    - http://localhost:27017
         metadata:
           annotations:
             consul.hashicorp.com/connect-inject: "true"
