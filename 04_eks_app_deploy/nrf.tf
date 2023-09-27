@@ -20,7 +20,8 @@ resource "helm_release" "free5gc_nrf" {
   values = [<<EOT
   nrf:
     configuration:
-      MongoDBUrl: mongodb://my-user:<your-password-here>@mongodb.mongodb:27017
+      configuration: |-
+        MongoDBUrl: mongodb://my-user:<your-password-here>@mongodb.mongodb:27017
   EOT
   ]
 
