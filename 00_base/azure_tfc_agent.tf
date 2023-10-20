@@ -14,7 +14,7 @@ resource "tls_private_key" "tfc_agent" {
 }
 
 data "azurerm_role_definition" "owner" {
-  name = "Contributor"
+  name = "Owner"
 }
 
 resource "azurerm_user_assigned_identity" "tfc_agent" {
