@@ -23,6 +23,11 @@ resource "azurerm_user_assigned_identity" "tfc_agent" {
   name                = "tfc-agent-${random_id.this.hex}"
 }
 
+import {
+  to = azurerm_role_assignment.tfc_agent
+  id = "/subscriptions/a4585b8a-0324-4c77-84a7-807d9d066a07/providers/Microsoft.Authorization/roleAssignments/b39b18e4-77e4-4de4-b0d1-903f0fa237f8"
+}
+
 resource "azurerm_role_assignment" "tfc_agent" {
   scope              = data.azurerm_subscription.this.id
   role_definition_id = data.azurerm_role_definition.owner.id
