@@ -46,7 +46,7 @@ terraform {
   backend "remote" {
     organization = "team-rsa"
     workspaces {
-      name = "02_aks"
+      name = "03_aks"
     }
   }
   required_providers {
