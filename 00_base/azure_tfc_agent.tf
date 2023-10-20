@@ -33,7 +33,7 @@ resource "azurerm_role_assignment" "tfc_agent" {
   role_definition_id = data.azurerm_role_definition.owner.id
   principal_id       = azurerm_user_assigned_identity.tfc_agent.principal_id
 
-  skip_service_principal_aad_check = true
+  skip_service_principal_aad_check = false
 
   lifecycle {
     ignore_changes = [
